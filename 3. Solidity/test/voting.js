@@ -90,8 +90,8 @@ contract("Voting", function (accounts) {
             'from': user1
         });
         truffleAssert.eventEmitted(result, 'ProposalRegistered');
-
-        const proposal = await voting.proposals(0);
+        // vote 0 est le vote blanc
+        const proposal = await voting.proposals(1);
         assert.equal(proposal.description, description, "La description doit etre enregistrée");
 
         // add 2 proposals
@@ -124,29 +124,43 @@ contract("Voting", function (accounts) {
         });
 
         // Create equality, the winner is the first to add proposal
-        const result = await voting.registerVote(0, {
+        const result = await voting.registerVote(1, {
             'from': user1
         });
         truffleAssert.eventEmitted(result, 'Voted');
 
-        await voting.registerVote(1, {
+        await voting.registerVote(2, {
             'from': user2
         });
-        await voting.registerVote(1, {
+        await voting.registerVote(2, {
             'from': user3
         });
-        await voting.registerVote(2, {
+        await voting.registerVote(3, {
             'from': accounts[5]
         });
-        await voting.registerVote(2, {
+        await voting.registerVote(3, {
             'from': accounts[6]
         });
-        const proposal0 = await voting.proposals(0);
+        // proposal 0  = vote blanc
         const proposal1 = await voting.proposals(1);
         const proposal2 = await voting.proposals(2);
-        assert.equal(proposal0.voteCount, 1, "La proposition 0 doit avoir 1 vote");
-        assert.equal(proposal1.voteCount, 2, "La proposition 1 doit avoir 2 votes"); // proposition gagnante
-        assert.equal(proposal2.voteCount, 2, "La proposition 2 doit avoir 2 votes");
+        const proposal3 = await voting.proposals(3);
+        assert.equal(proposal1.voteCount, 1, "La proposition 0 doit avoir 1 vote");
+        assert.equal(proposal2.voteCount, 2, "La proposition 1 doit avoir 2 votes"); // proposition gagnante
+        assert.equal(proposal3.voteCount, 2, "La proposition 2 doit avoir 2 votes");
+    });
+
+    it("should assert registred user save voting choice", async function () {
+        const voter1 = await voting.voters(user1);
+        const voter2 = await voting.voters(user2);
+        const voter3 = await voting.voters(user3);
+        const voter5 = await voting.voters(accounts[5]);
+        const voter6 = await voting.voters(accounts[6]);
+        assert.equal(voter1.votedProposalId, 1, "user1 a voté pour La proposition 1 ");
+        assert.equal(voter2.votedProposalId, 2, "user2 a voté pour La proposition 2");
+        assert.equal(voter3.votedProposalId, 2, "user3 a voté pour La proposition 2");
+        assert.equal(voter5.votedProposalId, 3, "user5 a voté pour La proposition 3");
+        assert.equal(voter6.votedProposalId, 3, "user6 a voté pour La proposition 3");
     });
 
     it("should revert on vote by no registrered user", async function () {
@@ -191,7 +205,7 @@ contract("Voting", function (accounts) {
             'from': userAdmin
         });
         const winningProposalId = await voting.winningProposalId();
-        assert.equal(winningProposalId.toNumber(), 1, "La proposition gagnante est la 1");
+        assert.equal(winningProposalId.toNumber(), 2, "La proposition gagnante est la 2");
     });
     /**
      *   Tout le monde peut vérifier les derniers détails de la proposition gagnante.

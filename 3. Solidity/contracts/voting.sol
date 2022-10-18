@@ -42,7 +42,9 @@ contract Voting is Ownable {
         _;
     }
 
-    constructor() Ownable() {}
+    constructor() Ownable() {
+        proposals.push(Proposal("vote blanc", 0));
+    }
 
     function registerVoter(address _address) public onlyOwner {
         require(
@@ -83,6 +85,7 @@ contract Voting is Ownable {
 
         proposals[_proposalId].voteCount++;
         voters[msg.sender].hasVoted = true;
+        voters[msg.sender].votedProposalId = _proposalId;
 
         emit Voted(msg.sender, _proposalId);
     }
