@@ -1,0 +1,19 @@
+{
+    "scripts": {
+        "compile": "truffle compile",
+        "develop": "truffle develop",
+        "test": "truffle test"
+    },
+    "dependencies": {
+        "@openzeppelin/contracts": "^4.7.3",
+        "@truffle/hdwallet-provider": "^2.1.0",
+        "@openzeppelin/test-helpers": "^0.5.16",
+        "eth-gas-reporter": "^0.2.25",
+        "dotenv": "^16.0.3",
+        "truffle": "^5.6.1",
+        "truffle-assertions": "^0.9.2"
+    },
+    "devDependencies": {
+        "mocha": "^9.2.2"
+    }
+}
