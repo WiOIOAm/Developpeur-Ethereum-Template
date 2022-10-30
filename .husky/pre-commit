@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-cd 4.\ Truffle\ \&\ CI-CD/
+cd 5.\ Smart\ contract\ Solidity\ \&\ bonnes\ pratiques\ de\ sécurité/
 yarn prettier:solidity
 yarn test
