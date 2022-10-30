@@ -1,0 +1,12 @@
+{
+  "private": false,
+  "scripts": {
+    "postinstall": "husky install",
+    "prepack": "pinst --disable",
+    "postpack": "pinst --enable"
+  },
+  "devDependencies": {  
+    "husky": "^8.0.1",
+    "pinst": "^3.0.0"
+  }
+}
