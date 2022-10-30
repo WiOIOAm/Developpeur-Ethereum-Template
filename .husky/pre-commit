@@ -3,4 +3,7 @@
 
 cd 5.\ Smart\ contract\ Solidity\ \&\ bonnes\ pratiques\ de\ sécurité/
 yarn prettier:solidity
+git add contracts/.
+yarn docgen
+git add docs/.
 yarn test

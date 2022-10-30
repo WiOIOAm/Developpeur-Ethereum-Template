@@ -1,18 +1,23 @@
 ## Table of Contents
 
 1. [General Info](#general-info)
-2. [Technologies](#technologies)
-3. [Installation](#installation)
-4. [Run testing](#runtesting)
-5. [CI](#ci)
-6. [FAQs](#faqs)
-7. [Crédits](#credits)
+1. [Documentation](#documentation)
+1. [Technologies](#technologies)
+1. [Installation](#installation)
+1. [Run tests](#run-testing)
+1. [CI](#ci)
+1. [FAQs](#faqs)
+1. [Crédits](#credits)
 
 ### General Info
 
 ---
 
 The second project of Alyra's developer course requires us to prove our skills in testing solidity contracts. In addition, we should to show our ability to integrate into team projects.
+
+## Documentation
+
+Please find documentation in MD format in the `/docs` directory.
 
 ## Technologies
 
@@ -25,6 +30,7 @@ A list of technologies used within the project:
 - [eth-gas-reporter](https://github.com/cgewecke/eth-gas-reporter): Version ^0.2.25
 - [@openzeppelin/test-helpers](https://github.com/OpenZeppelin/openzeppelin-test-helpers): Version ^0.5.16
 - [@openzeppelin/contracts](https://github.com/OpenZeppelin/openzeppelin-contracts): Version ^4.7.3
+- [solidoc2]https://github.com/neptune-mutual/solidoc2): Version ^1.0.7
 
 ## Installation
 
@@ -38,7 +44,7 @@ $ cd 4.\ Truffle\ \&\ CI-CD/
 $ yarn install
 ```
 
-## Run testing
+## Run tests
 
 ---
 
@@ -62,6 +68,8 @@ Husky configured at the top of the projetct for pre-commit action :
 
 - lint this exercice with prettier and solidity extension
 - testing this exercice
+- generate documentation
+- add file changing in commit
 
 ## FAQs
 
