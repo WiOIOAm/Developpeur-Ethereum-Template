@@ -1,6 +1,6 @@
 # Ownable.sol
 
-View Source: [\node_modules\@openzeppelin\contracts\access\Ownable.sol](..\node_modules\@openzeppelin\contracts\access\Ownable.sol)
+View Source: [@openzeppelin\contracts\access\Ownable.sol](..\@openzeppelin\contracts\access\Ownable.sol)
 
 **↗ Extends: [Context](Context.md)**
 **↘ Derived Contracts: [Voting](Voting.md)**

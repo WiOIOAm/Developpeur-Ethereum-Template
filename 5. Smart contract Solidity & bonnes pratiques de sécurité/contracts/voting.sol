@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.17;
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title A linear voting system
@@ -106,7 +106,7 @@ contract Voting is Ownable {
      * @notice Voters Add a proposal at ProposalsRegistrationStarted session
      * @param _desc The proposal description of registered voter
      */
-    function addProposal(string calldata _desc) external onlyVoters {
+    function addProposal(string memory _desc) external onlyVoters {
         require(
             workflowStatus == WorkflowStatus.ProposalsRegistrationStarted,
             "Proposals are not allowed yet"

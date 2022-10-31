@@ -1,6 +1,6 @@
 # Context.sol
 
-View Source: [\node_modules\@openzeppelin\contracts\utils\Context.sol](..\node_modules\@openzeppelin\contracts\utils\Context.sol)
+View Source: [@openzeppelin\contracts\utils\Context.sol](..\@openzeppelin\contracts\utils\Context.sol)
 
 **↘ Derived Contracts: [Ownable](Ownable.md)**
 

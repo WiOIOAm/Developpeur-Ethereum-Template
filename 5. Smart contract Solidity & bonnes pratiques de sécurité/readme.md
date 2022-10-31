@@ -91,13 +91,13 @@ A list of frequently asked questions
 
 **NOTE**: HardhatEVM and ganache-cli implement the Ethereum blockchain. To get accurate gas measurements for other chains you may need to run your tests against development clients developed specifically for those networks.
 
+### Screenshot
+
+![first exercice testing result](https://julie-ramadanoski.dev/wp-content/uploads/2022/10/tp2Gaz-fees.png)
+
 ## Testing Coverage
 
 ---
-
-### Screenshot
-
-![first exercice testing result](https://cdn.discordapp.com/attachments/1018853513138274315/1031316704011227186/unknown.png)
 
 ## Credits
 
