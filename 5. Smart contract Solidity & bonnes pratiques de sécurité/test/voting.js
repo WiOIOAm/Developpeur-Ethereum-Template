@@ -542,7 +542,7 @@ contract("Voting", function (accounts) {
             await VotingInstance.endVotingSession({ from: owner });
             await VotingInstance.tallyVotes({ from: owner });
         });
-        it("assert winner is proposal 2", async () => {
+        it("assert winner is proposal GENESIS", async () => {
             expect(VotingInstance.winningProposalID.call(), 0)
         });
     });

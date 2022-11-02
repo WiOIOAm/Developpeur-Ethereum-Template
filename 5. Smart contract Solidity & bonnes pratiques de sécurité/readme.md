@@ -30,7 +30,7 @@ A list of technologies used within the project:
 - [eth-gas-reporter](https://github.com/cgewecke/eth-gas-reporter): Version ^0.2.25
 - [@openzeppelin/test-helpers](https://github.com/OpenZeppelin/openzeppelin-test-helpers): Version ^0.5.16
 - [@openzeppelin/contracts](https://github.com/OpenZeppelin/openzeppelin-contracts): Version ^4.7.3
-- [solidoc2]https://github.com/neptune-mutual/solidoc2): Version ^1.0.7
+- [solidoc2](https://github.com/neptune-mutual/solidoc2): Version ^1.0.7
 
 ## Installation
 
@@ -40,7 +40,7 @@ Before running tests, please clone then install
 
 ```
 $ git clone https://github.com/julie-ramadanoski/Developpeur-Ethereum-Template.git
-$ cd 4.\ Truffle\ \&\ CI-CD/
+$ cd 5.\ Smart\ contract\ Solidity\ \&\ bonnes\ pratiques\ de\ sécurité/
 $ yarn install
 ```
 
