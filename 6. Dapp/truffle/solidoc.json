@@ -13,5 +13,5 @@
     "contractsListBeginKeyword": "## Contracts",
     "replaceContractsListBeginKeyword": "### Contracts",
     "freahOutput": true,
-    "readMe": "README.md"
+    "readMe": "../README.md"
 }
