@@ -58,12 +58,9 @@ contract Voting is Ownable {
      * @param _addr The address of registered voter
      * @return Voter object
      */
-    function getVoter(address _addr)
-        external
-        view
-        onlyVoters
-        returns (Voter memory)
-    {
+    function getVoter(
+        address _addr
+    ) external view onlyVoters returns (Voter memory) {
         return voters[_addr];
     }
 
@@ -73,12 +70,9 @@ contract Voting is Ownable {
      * @param _id The id of proposal
      * @return Proposal object
      */
-    function getOneProposal(uint256 _id)
-        external
-        view
-        onlyVoters
-        returns (Proposal memory)
-    {
+    function getOneProposal(
+        uint256 _id
+    ) external view onlyVoters returns (Proposal memory) {
         return proposalsArray[_id];
     }
 

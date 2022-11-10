@@ -10,8 +10,7 @@
     "develop": "truffle develop",
     "migrate": "truffle migrate",
     "prettier:solidity": "./node_modules/.bin/prettier --write contracts/**/*.sol",
-    "solidoc": "solidoc2  ./ ./docs",
-    "docgen": "solidity-docgen --solc-module solc-0.8"
+    "docgen": "solidoc2  ./ ./docs"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",

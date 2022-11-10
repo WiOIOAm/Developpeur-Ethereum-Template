@@ -7,3 +7,10 @@
 # yarn docgen
 # git add docs/.
 # yarn test
+
+cd 6.\ Dapp/truffle/
+yarn prettier:solidity
+git add contracts/.
+yarn docgen
+git add docs/.
+yarn test
