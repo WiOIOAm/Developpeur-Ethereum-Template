@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-cd 5.\ Smart\ contract\ Solidity\ \&\ bonnes\ pratiques\ de\ sécurité/
-yarn prettier:solidity
-git add contracts/.
-yarn docgen
-git add docs/.
-yarn test
+# cd 5.\ Smart\ contract\ Solidity\ \&\ bonnes\ pratiques\ de\ sécurité/
+# yarn prettier:solidity
+# git add contracts/.
+# yarn docgen
+# git add docs/.
+# yarn test
