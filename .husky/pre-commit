@@ -8,9 +8,17 @@
 # git add docs/.
 # yarn test
 
-cd 6.\ Dapp/truffle/
+# publish documentation storybook
+cd 6.\ Dapp/client/
+yarn run chromatic
+
+# truffle projet
+cd ../truffle/
+# lint
 yarn prettier:solidity
 git add contracts/.
+# testing
 yarn test
+# generate solidity documentation
 yarn docgen
 git add ../client/src/docs/
