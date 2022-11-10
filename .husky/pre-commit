@@ -12,5 +12,5 @@ cd 6.\ Dapp/truffle/
 yarn prettier:solidity
 git add contracts/.
 yarn docgen
-git add docs/.
-yarn test
+git add ../client/src/docs/
+# yarn test
