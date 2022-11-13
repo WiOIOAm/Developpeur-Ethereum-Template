@@ -3,6 +3,7 @@
 1. [General Info](#general-info)
 1. [CI](#ci)
 1. [Documentation](#documentation)
+1. [Theming](#theming)
 1. [Truffle Technologies](#truffle-technologies)
 1. [Installation](#installation)
 1. [Run tests](#run-testing)
@@ -42,12 +43,22 @@ Vercel is connected to this repository :
 ### Markdown
 
 Smart contracts docs are availlable from front office
-Please find MD format documentation in the `client/src/docs` directory.
+Please find MD format documentation in the `./client/src/docs` directory.
 
 ### Storybook
 
 [storybook](https://636d3b6242ab8408095073c6-opjfnzhtuc.chromatic.com/)
 https://636d3b6242ab8408095073c6-opjfnzhtuc.chromatic.com/
+
+To [publish your storybook project](https://storybook.js.org/docs/react/sharing/publish-storybook) in live add your `CHROMATIC_PROJECT_TOKEN` in `client/.env`
+
+## Theming
+
+---
+
+Theme : Minimal Free – Client & Admin Dashboard
+
+This application is contruct with [MUI REACT Template](https://github.com/minimal-ui-kit/material-kit-react)
 
 ## Truffle Technologies
 

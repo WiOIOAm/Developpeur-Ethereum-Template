@@ -1,24 +1,16 @@
 import { EthProvider } from "./contexts/EthContext";
-import Intro from "./components/Intro/";
-import Setup from "./components/Setup";
-import Demo from "./components/Demo";
-import Footer from "./components/Footer";
-import "./App.css";
+import ThemeProvider from "./theme";
+import Router from "./routes";
+
+import ScrollToTop from "./components/scroll-to-top";
 
 function App() {
   return (
     <EthProvider>
-      <div id="App" >
-        <div className="container">
-          <Intro />
-          <hr />
-          <Setup />
-          <hr />
-          <Demo />
-          <hr />
-          <Footer />
-        </div>
-      </div>
+      <ThemeProvider>
+        <ScrollToTop />
+        <Router />
+      </ThemeProvider>
     </EthProvider>
   );
 }
