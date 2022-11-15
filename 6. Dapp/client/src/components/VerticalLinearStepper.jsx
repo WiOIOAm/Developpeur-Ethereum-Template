@@ -61,7 +61,13 @@ export const VerticalLinearStepper = ({
 };
 
 VerticalLinearStepper.propTypes = {
-  steps: PropTypes.shape({}),
+  steps: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      label: PropTypes.string,
+      description: PropTypes.string,
+    })
+  ),
   activeStep: PropTypes.number,
   isOwner: PropTypes.bool,
   handleNext: PropTypes.func.isRequired,

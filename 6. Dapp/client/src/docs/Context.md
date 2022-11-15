@@ -61,6 +61,5 @@ function _msgData() internal view virtual returns (bytes calldata) {
 
 * [Context](Context.md)
 * [Ownable](Ownable.md)
-* [SimpleStorage](SimpleStorage.md)
 * [Voting](Voting.md)
 

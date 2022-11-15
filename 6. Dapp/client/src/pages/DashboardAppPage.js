@@ -19,6 +19,10 @@ import steps from "../_mock/steps";
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
+  const handleNext = () => {
+    // TODO got to nextStep
+  };
+
   return (
     <>
       <Helmet>
@@ -79,7 +83,7 @@ export default function DashboardAppPage() {
                   },
                 }}
               >
-                <VerticalLinearStepper steps={steps} />
+                <VerticalLinearStepper steps={steps} handleNext={handleNext} />
               </CardContent>
             </Card>
           </Grid>

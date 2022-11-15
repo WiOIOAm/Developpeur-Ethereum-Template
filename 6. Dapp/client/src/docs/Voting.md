@@ -432,6 +432,5 @@ function tallyVotes() external onlyOwner {
 
 * [Context](Context.md)
 * [Ownable](Ownable.md)
-* [SimpleStorage](SimpleStorage.md)
 * [Voting](Voting.md)
 

@@ -201,6 +201,5 @@ function _transferOwnership(address newOwner) internal virtual {
 
 * [Context](Context.md)
 * [Ownable](Ownable.md)
-* [SimpleStorage](SimpleStorage.md)
 * [Voting](Voting.md)
 

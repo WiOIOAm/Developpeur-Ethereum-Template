@@ -10,7 +10,7 @@
 
 # publish documentation storybook
 cd 6.\ Dapp/client/
-yarn run chromatic
+yarn run chromatic --auto-accept-changes
 
 # truffle projet
 cd ../truffle/
