@@ -4,7 +4,7 @@ import { VerticalLinearStepper } from "../components/VerticalLinearStepper";
 import steps from "../_mock/steps";
 
 export default {
-  title: "Example/VerticalLinearStepper",
+  title: "Components/VerticalLinearStepper",
   component: VerticalLinearStepper,
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {

@@ -4,7 +4,7 @@ import NavSection from "../components/nav-section";
 import navConfig from "../layouts/dashboard/nav/config";
 
 export default {
-  title: "Example/NavSection",
+  title: "Components/NavSection",
   component: NavSection,
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {

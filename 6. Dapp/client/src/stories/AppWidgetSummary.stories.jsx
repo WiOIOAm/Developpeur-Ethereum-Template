@@ -3,7 +3,7 @@ import React from "react";
 import { AppWidgetSummary } from "../sections/@dashboard/app";
 
 export default {
-  title: "Example/AppWidgetSummary",
+  title: "Components/AppWidgetSummary",
   component: AppWidgetSummary,
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
