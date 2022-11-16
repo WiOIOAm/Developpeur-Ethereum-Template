@@ -10,12 +10,13 @@ export default {
     expanded: true, // Adds the description and default columns
   },
   argTypes: {
-    variant: {
+    color: {
       options: ["primary", "info", "secondary", "warning", "error"],
-      control: { type: "color" },
+      control: { type: "radio" },
     },
   },
 };
+
 const Template = (args) => <AppWidgetSummary {...args} />;
 
 export const notRegistredView = Template.bind({});
@@ -31,7 +32,7 @@ notRegistredView.args = {
 export const ownerView = Template.bind({});
 ownerView.args = {
   title: "only viewed by Owner",
-  total: 56,
+  total: "56",
   icon: "ant-design:android-filled",
   color: "primary",
   isOwner: true,
@@ -41,7 +42,7 @@ ownerView.args = {
 export const registredView = Template.bind({});
 registredView.args = {
   title: "only viewed by Registered",
-  total: 234,
+  total: "234",
   icon: "ant-design:windows-filled",
   color: "info",
   isOwner: false,

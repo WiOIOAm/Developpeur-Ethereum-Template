@@ -9,6 +9,7 @@ const initialState = {
   networkID: null,
   contract: null,
   me: null,
+  currentStep: null,
 };
 
 const reducer = (state, action) => {

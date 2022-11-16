@@ -137,12 +137,9 @@ Voter object
 	<summary><strong>Source Code</strong></summary>
 
 ```javascript
-function getVoter(address _addr)
-        external
-        view
-        onlyVoters
-        returns (Voter memory)
-    {
+function getVoter(
+        address _addr
+    ) external view onlyVoters returns (Voter memory) {
         return voters[_addr];
     }
 ```
@@ -175,12 +172,9 @@ Proposal object
 	<summary><strong>Source Code</strong></summary>
 
 ```javascript
-function getOneProposal(uint256 _id)
-        external
-        view
-        onlyVoters
-        returns (Proposal memory)
-    {
+function getOneProposal(
+        uint256 _id
+    ) external view onlyVoters returns (Proposal memory) {
         return proposalsArray[_id];
     }
 ```

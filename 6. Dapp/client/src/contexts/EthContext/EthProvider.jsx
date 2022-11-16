@@ -24,6 +24,9 @@ function EthProvider({ children }) {
         const getSelfVoter = await contract.methods
           .me()
           .call({ from: accounts[0] });
+        const currentStep = await contract.methods
+          .workflowStatus()
+          .call({ from: accounts[0] });
 
         // create user  profile
         const me = {
@@ -33,10 +36,17 @@ function EthProvider({ children }) {
           hasVoted: getSelfVoter.hasVoted,
           votedProposalId: getSelfVoter.votedProposalId,
         };
-
         dispatch({
           type: actions.init,
-          data: { artifact, web3, accounts, networkID, contract, me },
+          data: {
+            artifact,
+            web3,
+            accounts,
+            networkID,
+            contract,
+            me,
+            currentStep,
+          },
         });
       } catch (err) {
         /**
