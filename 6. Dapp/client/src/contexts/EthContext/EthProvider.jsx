@@ -16,11 +16,37 @@ function EthProvider({ children }) {
         let address, contract;
         address = artifact.networks[networkID].address;
         contract = new web3.eth.Contract(abi, address);
+
+        // get contract Owner and user data
+        const owner = await contract.methods
+          .owner()
+          .call({ from: accounts[0] });
+        const getSelfVoter = await contract.methods
+          .me()
+          .call({ from: accounts[0] });
+
+        // create user  profile
+        const me = {
+          address: accounts[0],
+          isOwner: accounts[0] === owner,
+          isRegistered: getSelfVoter.isRegistered,
+          hasVoted: getSelfVoter.hasVoted,
+          votedProposalId: getSelfVoter.votedProposalId,
+        };
+
         dispatch({
           type: actions.init,
-          data: { artifact, web3, accounts, networkID, contract },
+          data: { artifact, web3, accounts, networkID, contract, me },
         });
       } catch (err) {
+        /**
+         * when opening the application, if metamask is not connected
+         * keep in memory the artifact to connect without reloading the page
+         */
+        dispatch({
+          type: actions.init,
+          data: { ...initialState, artifact },
+        });
         console.error(err);
       }
     }
@@ -43,6 +69,15 @@ function EthProvider({ children }) {
     if (!!window.ethereum) {
       const events = ["chainChanged", "accountsChanged"];
       const handleChange = () => {
+        /**
+         * when changing account or chain
+         * reset application data
+         * keep in memory the artifact to connect without reloading the page
+         */
+        dispatch({
+          type: actions.init,
+          data: { ...initialState, artifact: state.artifact },
+        });
         init(state.artifact);
       };
 

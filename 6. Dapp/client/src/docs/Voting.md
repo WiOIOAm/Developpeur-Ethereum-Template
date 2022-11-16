@@ -77,6 +77,7 @@ modifier onlyVoters() internal
 
 ## Functions
 
+- [me()](#me)
 - [getVoter(address _addr)](#getvoter)
 - [getOneProposal(uint256 _id)](#getoneproposal)
 - [addVoter(address _addr)](#addvoter)
@@ -87,6 +88,27 @@ modifier onlyVoters() internal
 - [startVotingSession()](#startvotingsession)
 - [endVotingSession()](#endvotingsession)
 - [tallyVotes()](#tallyvotes)
+
+---    
+
+> ### me
+
+Get self as voter
+
+```solidity
+function me() external view
+returns(struct Voting.Voter)
+```
+
+<details>
+	<summary><strong>Source Code</strong></summary>
+
+```javascript
+function me() external view returns (Voter memory) {
+        return voters[msg.sender];
+    }
+```
+</details>
 
 ---    
 
@@ -115,9 +137,12 @@ Voter object
 	<summary><strong>Source Code</strong></summary>
 
 ```javascript
-function getVoter(
-        address _addr
-    ) external view onlyVoters returns (Voter memory) {
+function getVoter(address _addr)
+        external
+        view
+        onlyVoters
+        returns (Voter memory)
+    {
         return voters[_addr];
     }
 ```
@@ -150,9 +175,12 @@ Proposal object
 	<summary><strong>Source Code</strong></summary>
 
 ```javascript
-function getOneProposal(
-        uint256 _id
-    ) external view onlyVoters returns (Proposal memory) {
+function getOneProposal(uint256 _id)
+        external
+        view
+        onlyVoters
+        returns (Proposal memory)
+    {
         return proposalsArray[_id];
     }
 ```

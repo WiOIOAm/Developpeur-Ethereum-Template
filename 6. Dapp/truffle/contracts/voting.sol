@@ -51,6 +51,14 @@ contract Voting is Ownable {
     }
 
     // ::::::::::::: GETTERS ::::::::::::: //
+    /**
+     * @notice Get self as voter
+     * @dev Getter on voters mapping
+     * @return Voter object
+     */
+    function me() external view returns (Voter memory) {
+        return voters[msg.sender];
+    }
 
     /**
      * @notice Get one Voter
