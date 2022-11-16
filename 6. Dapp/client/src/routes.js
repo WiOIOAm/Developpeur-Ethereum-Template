@@ -5,6 +5,7 @@ import SimpleLayout from "./layouts/simple";
 // pages
 import Page404 from "./pages/Page404";
 import DashboardAppPage from "./pages/DashboardAppPage";
+import DocumentationPage from "./pages/DocumentationPage";
 
 // ----------------------------------------------------------------------
 
@@ -25,6 +26,10 @@ export default function Router() {
         { path: "404", element: <Page404 /> },
         { path: "*", element: <Navigate to="/404" /> },
       ],
+    },
+    {
+      element: <DashboardLayout />,
+      children: [{ path: "documentation", element: <DocumentationPage /> }],
     },
     {
       path: "*",

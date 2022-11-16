@@ -47,7 +47,7 @@ Please find MD format documentation in the `./client/src/docs` directory.
 
 ### Storybook
 
-Please read developper documentation for ReactJS components in [storybook live application](https://636d3b6242ab8408095073c6-htlrbgfuok.chromatic.com)
+Please read developper documentation for ReactJS components in [storybook live application](https://636d3b6242ab8408095073c6-clkhvchjaq.chromatic.com)
 
 To [publish your storybook project](https://storybook.js.org/docs/react/sharing/publish-storybook) in live add your `CHROMATIC_PROJECT_TOKEN` in `client/.env`
 

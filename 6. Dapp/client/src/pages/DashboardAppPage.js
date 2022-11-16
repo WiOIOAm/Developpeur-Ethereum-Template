@@ -18,6 +18,8 @@ import {
 
 // context
 import useEth from "../contexts/EthContext/useEth";
+// hooks
+import useResponsive from "../hooks/useResponsive";
 // components
 import { VerticalLinearStepper } from "../components/VerticalLinearStepper";
 // sections
@@ -31,6 +33,7 @@ export default function DashboardAppPage() {
   const {
     state: { me, currentStep, contract },
   } = useEth();
+  const mdDown = useResponsive("down", "lg");
 
   const [open, setOpen] = useState(false);
 
@@ -94,21 +97,24 @@ export default function DashboardAppPage() {
           Bienvenue !
         </Typography>
         {!me && (
-          <Typography variant="body2" sx={{ mb: 5 }}>
+          <Typography variant="body2" sx={{ mb: 5, color: "red" }}>
             <span>Connectez votre MetaMask pour utiliser l'application</span>
           </Typography>
         )}
-        {me?.isRegistered && (
-          <Typography variant="body2" sx={{ mb: 5 }}>
-            <span>Vous êtes un votant enregistré</span>
-          </Typography>
+        {mdDown && (
+          <>
+            {me?.isRegistered && (
+              <Typography variant="body2" sx={{ mb: 5 }}>
+                <span>Vous êtes un votant enregistré</span>
+              </Typography>
+            )}
+            {me?.isOwner && (
+              <Typography variant="body2" sx={{ mb: 5 }}>
+                <span>Vous êtes l'animateur de ce vote</span>
+              </Typography>
+            )}
+          </>
         )}
-        {me?.isOwner && (
-          <Typography variant="body2" sx={{ mb: 5 }}>
-            <span>Vous êtes l'animateur de ce vote</span>
-          </Typography>
-        )}
-
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary

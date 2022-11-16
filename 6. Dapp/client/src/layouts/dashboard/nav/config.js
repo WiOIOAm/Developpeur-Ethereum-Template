@@ -20,16 +20,8 @@ const navConfig = [
     showToNonRegistred: true,
   },
   {
-    title: "participer",
-    path: "/dashboard/participer",
-    icon: icon("ic_user"),
-    showToOwner: false,
-    showToRegistered: true,
-    showToNonRegistred: false,
-  },
-  {
     title: "logs",
-    path: "/dashboard/logs",
+    path: "/logs",
     icon: icon("ic_cart"),
     showToOwner: true,
     showToRegistered: true,
@@ -37,7 +29,7 @@ const navConfig = [
   },
   {
     title: "solidocs",
-    path: "/dashboard/documentation",
+    path: "/documentation",
     icon: icon("ic_blog"),
     showToOwner: true,
     showToRegistered: true,
@@ -46,7 +38,7 @@ const navConfig = [
   {
     title: "storybook",
     href: true,
-    path: "https://636d3b6242ab8408095073c6-opjfnzhtuc.chromatic.com/",
+    path: "https://636d3b6242ab8408095073c6-clkhvchjaq.chromatic.com",
     icon: icon("ic_lock"),
     showToOwner: true,
     showToRegistered: true,

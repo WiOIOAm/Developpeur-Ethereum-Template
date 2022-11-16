@@ -58,7 +58,12 @@ export default function Nav({ openNav, onCloseNav }) {
         <MetamaskUser me={me} />
       </Box>
 
-      <NavSection data={navConfig} />
+      <NavSection
+        data={navConfig}
+        isOwner={me?.isOwner || false}
+        isRegistered={me?.isRegistered || false}
+        isNonRegistered={!me?.isRegistered || true}
+      />
 
       <Box sx={{ flexGrow: 1 }} />
 
