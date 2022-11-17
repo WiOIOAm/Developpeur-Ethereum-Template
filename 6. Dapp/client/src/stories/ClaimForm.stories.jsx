@@ -10,4 +10,39 @@ export default {
 const Template = (args) => <ClaimForm {...args} />;
 
 export const form = Template.bind({});
-form.args = {};
+form.args = {
+  isLoading: false,
+  isClaimSended: false,
+  me: {
+    address: "0xabc123",
+    isOwner: false,
+    isRegistered: false,
+    hasVoted: false,
+    votedProposalId: 0,
+  },
+};
+export const formLoading = Template.bind({});
+formLoading.args = {
+  isLoading: true,
+  isClaimSended: false,
+  me: {
+    address: "0xabc123",
+    isOwner: false,
+    isRegistered: false,
+    hasVoted: false,
+    votedProposalId: 0,
+  },
+};
+
+export const formSended = Template.bind({});
+formSended.args = {
+  isClaimSended: true,
+  isLoading: false,
+  me: {
+    address: "0xabc123",
+    isOwner: false,
+    isRegistered: false,
+    hasVoted: false,
+    votedProposalId: 0,
+  },
+};

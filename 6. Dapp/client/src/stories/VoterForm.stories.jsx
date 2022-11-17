@@ -10,4 +10,10 @@ export default {
 const Template = (args) => <VoterForm {...args} />;
 
 export const form = Template.bind({});
-form.args = {};
+form.args = {
+  isLoading: false,
+};
+export const formLoading = Template.bind({});
+formLoading.args = {
+  isLoading: true,
+};

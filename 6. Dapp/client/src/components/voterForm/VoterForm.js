@@ -1,32 +1,28 @@
-import { useState } from "react";
 // @mui
-import { Stack, IconButton, InputAdornment, TextField } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-// components
-import Iconify from "../iconify";
 
-// ----------------------------------------------------------------------
-
-export default function VoterForm() {
-  const handleClick = () => {
-    // TODO Add voter
-  };
-
+export default function VoterForm({ handleSubmit, isLoading }) {
   return (
-    <>
+    <form onSubmit={handleSubmit}>
       <Stack marginBottom={3}>
-        <TextField name="ethAddress" label="Adresse Ethereum" type="text" />
+        <TextField
+          inputProps={{ pattern: "0x[a-fA-F0-9]{40}" }}
+          name="ethAddress"
+          label="Adresse Ethereum"
+          type="text"
+          required
+        />
       </Stack>
-
       <LoadingButton
+        loading={isLoading}
         fullWidth
         size="large"
         type="submit"
         variant="contained"
-        onClick={handleClick}
       >
         Enregistrer ce votant
       </LoadingButton>
-    </>
+    </form>
   );
 }

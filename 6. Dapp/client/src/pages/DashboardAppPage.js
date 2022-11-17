@@ -18,12 +18,14 @@ import {
 
 // context
 import useEth from "../contexts/EthContext/useEth";
-// hooks
-import useResponsive from "../hooks/useResponsive";
 // components
 import { VerticalLinearStepper } from "../components/VerticalLinearStepper";
+
 // sections
-import { AppWidgetSummary } from "../sections/@dashboard/app";
+import {
+  AppWidgetSummary,
+  AppSwitchStepView,
+} from "../sections/@dashboard/app";
 
 import steps from "../_mock/steps";
 
@@ -33,12 +35,10 @@ export default function DashboardAppPage() {
   const {
     state: { me, currentStep, contract, proposals, nbVotes, nbVoters },
   } = useEth();
-  const mdDown = useResponsive("down", "lg");
 
   const [open, setOpen] = useState(false);
 
   const changeVotingStatus = async () => {
-    console.log("changeVotingStatus", currentStep);
     try {
       switch (currentStep) {
         case "0":
@@ -77,7 +77,6 @@ export default function DashboardAppPage() {
     changeVotingStatus();
   };
   const handleNext = () => {
-    console.log("handleNext", me.isOwner && !!contract);
     if (me.isOwner && !!contract) {
       setOpen(true);
     }
@@ -101,20 +100,6 @@ export default function DashboardAppPage() {
             <span>Connectez votre MetaMask pour utiliser l'application</span>
           </Typography>
         )}
-        {mdDown && (
-          <>
-            {me?.isRegistered && (
-              <Typography variant="body2" sx={{ mb: 5 }}>
-                <span>Vous êtes un votant enregistré</span>
-              </Typography>
-            )}
-            {me?.isOwner && (
-              <Typography variant="body2" sx={{ mb: 5 }}>
-                <span>Vous êtes l'animateur de ce vote</span>
-              </Typography>
-            )}
-          </>
-        )}
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
@@ -129,7 +114,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Propositions"
-              total={proposals?.length || ""}
+              total={proposals ? proposals.length.toString() : ""}
               color="info"
               icon={"ant-design:comment-outlined"}
               isOwner={me?.isOwner}
@@ -140,7 +125,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Votes"
-              total={nbVotes ? nbVotes.toString() : ""}
+              total={nbVotes !== null ? nbVotes.toString() : ""}
               color="warning"
               icon={"ant-design:edit-filled"}
               isOwner={me?.isOwner}
@@ -159,7 +144,11 @@ export default function DashboardAppPage() {
             />
           </Grid>
 
-          <Grid item xs={12} md={6} lg={8}></Grid>
+          {!!me && (
+            <Grid item xs={12} md={6} lg={8}>
+              <AppSwitchStepView />
+            </Grid>
+          )}
 
           <Grid item xs={12} md={6} lg={4}>
             <Card>
