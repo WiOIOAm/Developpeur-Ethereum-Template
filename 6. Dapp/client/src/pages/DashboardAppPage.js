@@ -31,7 +31,7 @@ import steps from "../_mock/steps";
 
 export default function DashboardAppPage() {
   const {
-    state: { me, currentStep, contract },
+    state: { me, currentStep, contract, proposals, nbVotes, nbVoters },
   } = useEth();
   const mdDown = useResponsive("down", "lg");
 
@@ -94,7 +94,7 @@ export default function DashboardAppPage() {
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Bienvenue !
+          Easy Voting DApp
         </Typography>
         {!me && (
           <Typography variant="body2" sx={{ mb: 5, color: "red" }}>
@@ -118,8 +118,8 @@ export default function DashboardAppPage() {
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
-              title="Voters"
-              total="714000"
+              title="Votants"
+              total={nbVoters || ""}
               icon={"ant-design:smile-twotone"}
               isOwner={me?.isOwner}
               isRegistered={me?.isRegistered}
@@ -128,8 +128,8 @@ export default function DashboardAppPage() {
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
-              title="Proposals"
-              total="1352831"
+              title="Propositions"
+              total={proposals?.length || ""}
               color="info"
               icon={"ant-design:comment-outlined"}
               isOwner={me?.isOwner}
@@ -140,7 +140,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Votes"
-              total="1723315"
+              total={nbVotes ? nbVotes.toString() : ""}
               color="warning"
               icon={"ant-design:edit-filled"}
               isOwner={me?.isOwner}
@@ -151,7 +151,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Phase"
-              total={(parseInt(currentStep) + 1).toString() || "0"}
+              total={currentStep ? (parseInt(currentStep) + 1).toString() : "0"}
               color="error"
               icon={"ant-design:file-protect-outlined"}
               isOwner={me?.isOwner}

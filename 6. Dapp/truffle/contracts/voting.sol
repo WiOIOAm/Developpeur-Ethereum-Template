@@ -11,6 +11,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  */
 contract Voting is Ownable {
     uint256 public winningProposalID;
+    uint256 public nbVoters;
 
     struct Voter {
         bool isRegistered;
@@ -73,6 +74,20 @@ contract Voting is Ownable {
     }
 
     /**
+     * @notice Get list of proposals
+     * @dev Getter on proposal array
+     * @return Proposal[] proposalsArray
+     */
+    function getProposals()
+        external
+        view
+        onlyVoters
+        returns (Proposal[] memory)
+    {
+        return proposalsArray;
+    }
+
+    /**
      * @notice Get one proposal
      * @dev Explicit getter on voters array
      * @param _id The id of proposal
@@ -99,6 +114,7 @@ contract Voting is Ownable {
         require(voters[_addr].isRegistered != true, "Already registered");
 
         voters[_addr].isRegistered = true;
+        nbVoters++;
         emit VoterRegistered(_addr);
     }
 

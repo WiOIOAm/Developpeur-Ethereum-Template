@@ -10,6 +10,10 @@ const initialState = {
   contract: null,
   me: null,
   currentStep: null,
+  proposals: null,
+  nbVotes: null,
+  nbVoters: null,
+  winningProposalId: null,
 };
 
 const reducer = (state, action) => {

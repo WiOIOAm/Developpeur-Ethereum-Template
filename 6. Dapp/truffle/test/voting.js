@@ -41,6 +41,10 @@ contract("Voting", function (accounts) {
       const res = await VotingInstance.addVoter(voter1, { from: owner });
       expect(res.receipt.status).to.be.true;
     });
+    it("assert increment number of voters", async () => {
+      const res = await VotingInstance.addVoter(voter1, { from: owner });
+      expect(VotingInstance.nbVoters.call(), 1);
+    });
     it("assert event on adding a voter", async () => {
       const res = await VotingInstance.addVoter(voter1, { from: owner });
       expectEvent(res, "VoterRegistered", { voterAddress: voter1 });
@@ -48,7 +52,7 @@ contract("Voting", function (accounts) {
   });
 
   /**
-   * ::::::::::::::::::: UNIT TESTING GET VOTER :::::::::::::::::::
+   * ::::::::::::::::::: UNIT TESTING GET SELF VOTER :::::::::::::::::::
    */
 
   describe("Unit testing Getting self as voter", function () {
@@ -56,32 +60,36 @@ contract("Voting", function (accounts) {
       await VotingInstance.addVoter(voter1, { from: owner });
     });
     it("assert getting self as no registred address", async () => {
-      const firstVoter = await VotingInstance.me({
+      const me = await VotingInstance.me({
         from: voter2,
       });
-      expect(firstVoter).that.have.any.keys(
+      expect(me).that.have.any.keys(
         "isRegistered",
         "hasVoted",
         "votedProposalId"
       );
-      expect(firstVoter.votedProposalId).to.be.bignumber.equals(BN(0));
-      expect(firstVoter.isRegistered).to.be.false;
-      expect(firstVoter.hasVoted).to.be.false;
+      expect(me.votedProposalId).to.be.bignumber.equals(BN(0));
+      expect(me.isRegistered).to.be.false;
+      expect(me.hasVoted).to.be.false;
     });
     it("assert getting self as registered address", async () => {
-      const firstVoter = await VotingInstance.me({
+      const me = await VotingInstance.me({
         from: voter1,
       });
-      expect(firstVoter).that.have.any.keys(
+      expect(me).that.have.any.keys(
         "isRegistered",
         "hasVoted",
         "votedProposalId"
       );
-      expect(firstVoter.votedProposalId).to.be.bignumber.equals(BN(0));
-      expect(firstVoter.isRegistered).to.be.true;
-      expect(firstVoter.hasVoted).to.be.false;
+      expect(me.votedProposalId).to.be.bignumber.equals(BN(0));
+      expect(me.isRegistered).to.be.true;
+      expect(me.hasVoted).to.be.false;
     });
   });
+
+  /**
+   * ::::::::::::::::::: UNIT TESTING GET VOTER :::::::::::::::::::
+   */
   describe("Unit testing Getting a voter", function () {
     beforeEach(async function () {
       await VotingInstance.addVoter(voter1, { from: owner });
@@ -161,6 +169,34 @@ contract("Voting", function (accounts) {
         from: voter1,
       });
       expectEvent(res, "ProposalRegistered", { proposalId: BN(1) });
+    });
+  });
+
+  /**
+   * ::::::::::::::::::: UNIT TESTING GET ALL PROPOSALS :::::::::::::::::::
+   */
+  describe("Unit testing Getting all proposals", function () {
+    beforeEach(async function () {
+      await VotingInstance.addVoter(voter1, { from: owner });
+      await VotingInstance.startProposalsRegistering({ from: owner });
+      await VotingInstance.addProposal("description", { from: voter1 });
+    });
+    it("revert getting all proposals by non authorized user", async () => {
+      await expectRevert(
+        VotingInstance.getProposals({ from: owner }),
+        errorMessages.notOnlyVoter
+      );
+      await expectRevert(
+        VotingInstance.getProposals({ from: noWhitlistedUser }),
+        errorMessages.notOnlyVoter
+      );
+    });
+
+    it("assert getting all proposals", async () => {
+      const proposals = await VotingInstance.getProposals({
+        from: voter1,
+      });
+      expect(proposals).to.have.length(2);
     });
   });
 

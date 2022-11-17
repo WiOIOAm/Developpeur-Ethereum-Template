@@ -48,6 +48,7 @@ struct Proposal {
 ```js
 //public members
 uint256 public winningProposalID;
+uint256 public nbVoters;
 enum Voting.WorkflowStatus public workflowStatus;
 
 //internal members
@@ -79,6 +80,7 @@ modifier onlyVoters() internal
 
 - [me()](#me)
 - [getVoter(address _addr)](#getvoter)
+- [getProposals()](#getproposals)
 - [getOneProposal(uint256 _id)](#getoneproposal)
 - [addVoter(address _addr)](#addvoter)
 - [addProposal(string _desc)](#addproposal)
@@ -137,10 +139,39 @@ Voter object
 	<summary><strong>Source Code</strong></summary>
 
 ```javascript
-function getVoter(
-        address _addr
-    ) external view onlyVoters returns (Voter memory) {
+function getVoter(address _addr)
+        external
+        view
+        onlyVoters
+        returns (Voter memory)
+    {
         return voters[_addr];
+    }
+```
+</details>
+
+---    
+
+> ### getProposals
+
+Get list of proposals
+
+```solidity
+function getProposals() external view onlyVoters 
+returns(struct Voting.Proposal[])
+```
+
+<details>
+	<summary><strong>Source Code</strong></summary>
+
+```javascript
+function getProposals()
+        external
+        view
+        onlyVoters
+        returns (Proposal[] memory)
+    {
+        return proposalsArray;
     }
 ```
 </details>
@@ -172,9 +203,12 @@ Proposal object
 	<summary><strong>Source Code</strong></summary>
 
 ```javascript
-function getOneProposal(
-        uint256 _id
-    ) external view onlyVoters returns (Proposal memory) {
+function getOneProposal(uint256 _id)
+        external
+        view
+        onlyVoters
+        returns (Proposal memory)
+    {
         return proposalsArray[_id];
     }
 ```
@@ -210,6 +244,7 @@ function addVoter(address _addr) external onlyOwner {
         require(voters[_addr].isRegistered != true, "Already registered");
 
         voters[_addr].isRegistered = true;
+        nbVoters++;
         emit VoterRegistered(_addr);
     }
 ```

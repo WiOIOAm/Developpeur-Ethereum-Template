@@ -6,6 +6,43 @@ import { reducer, actions, initialState } from "./state";
 function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const contractData = async (contract, account) => {
+    // get contract Owner
+    const owner = await contract.methods.owner().call({ from: account });
+
+    // create user profile
+    const getSelfVoter = await contract.methods.me().call({ from: account });
+    const me = {
+      address: account,
+      isOwner: account === owner,
+      isRegistered: getSelfVoter?.isRegistered,
+      hasVoted: getSelfVoter?.hasVoted,
+      votedProposalId: getSelfVoter?.votedProposalId,
+    };
+
+    let proposals = false;
+    let nbVotes = false;
+    if (me.isRegistered) {
+      // get proposals an count of votes
+      proposals = await contract.methods.getProposals().call({ from: account });
+
+      nbVotes = proposals?.reduce((prev, curr) => prev.voteCount + curr, 0);
+    }
+
+    // get count of voters
+    const nbVoters = await contract.methods.nbVoters().call({ from: account });
+    const winningProposalId = await contract.methods
+      .winningProposalID()
+      .call({ from: account });
+
+    // get Voting current step
+    const currentStep = await contract.methods
+      .workflowStatus()
+      .call({ from: account });
+
+    return { me, currentStep, proposals, nbVotes, nbVoters, winningProposalId };
+  };
+
   const init = useCallback(async (artifact) => {
     if (artifact) {
       try {
@@ -17,25 +54,7 @@ function EthProvider({ children }) {
         address = artifact.networks[networkID].address;
         contract = new web3.eth.Contract(abi, address);
 
-        // get contract Owner and user data
-        const owner = await contract.methods
-          .owner()
-          .call({ from: accounts[0] });
-        const getSelfVoter = await contract.methods
-          .me()
-          .call({ from: accounts[0] });
-        const currentStep = await contract.methods
-          .workflowStatus()
-          .call({ from: accounts[0] });
-
-        // create user  profile
-        const me = {
-          address: accounts[0],
-          isOwner: accounts[0] === owner,
-          isRegistered: getSelfVoter.isRegistered,
-          hasVoted: getSelfVoter.hasVoted,
-          votedProposalId: getSelfVoter.votedProposalId,
-        };
+        const appData = await contractData(contract, accounts[0]);
         dispatch({
           type: actions.init,
           data: {
@@ -44,8 +63,7 @@ function EthProvider({ children }) {
             accounts,
             networkID,
             contract,
-            me,
-            currentStep,
+            ...appData,
           },
         });
       } catch (err) {
