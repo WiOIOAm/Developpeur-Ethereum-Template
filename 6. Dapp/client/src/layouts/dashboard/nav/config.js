@@ -20,8 +20,8 @@ const navConfig = [
     showToNonRegistred: true,
   },
   {
-    title: "logs",
-    path: "/logs",
+    title: "events",
+    path: "/events",
     icon: icon("ic_cart"),
     showToOwner: true,
     showToRegistered: true,
@@ -38,7 +38,7 @@ const navConfig = [
   {
     title: "storybook",
     href: true,
-    path: "https://636d3b6242ab8408095073c6-rsfrojhyuh.chromatic.com",
+    path: "https://636d3b6242ab8408095073c6-usfybnfpnx.chromatic.com",
     icon: icon("ic_lock"),
     showToOwner: true,
     showToRegistered: true,

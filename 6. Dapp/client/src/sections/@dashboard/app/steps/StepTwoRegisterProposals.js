@@ -1,6 +1,30 @@
-import { Typography } from "@mui/material";
+import { useState } from "react";
 
-export default function StepTwoRegisterProposals({ me }) {
+import { Typography } from "@mui/material";
+import ProposalForm from "../../../../components/proposalForm";
+
+export default function StepTwoRegisterProposals({ contract, me }) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    setIsLoading(true);
+    e.preventDefault();
+    if (!me?.isRegistred && !isLoading) {
+      const proposal = e.target[0].value;
+      await contract.methods.addProposal(proposal).send({ from: me.address });
+
+      try {
+        setIsLoading(true);
+        e.target.reset();
+      } catch (error) {
+        // catch metamask reject transaction
+        alert(JSON.stringify(error));
+        console.error("handleSubmitStepTwo", error);
+      }
+    }
+    setIsLoading(false);
+  };
+
   return (
     <>
       {me.isOwner && (
@@ -18,7 +42,7 @@ export default function StepTwoRegisterProposals({ me }) {
           <Typography variant="h4" sx={{ mb: 5 }}>
             Faire une proposition
           </Typography>
-          {/* <ProposalForm /> */}
+          <ProposalForm handleSubmit={handleSubmit} isLoading={isLoading} />
         </>
       )}
     </>

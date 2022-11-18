@@ -6,6 +6,7 @@ import SimpleLayout from "./layouts/simple";
 import Page404 from "./pages/Page404";
 import DashboardAppPage from "./pages/DashboardAppPage";
 import DocumentationPage from "./pages/DocumentationPage";
+import EventsPage from "./pages/EventsPage";
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +30,10 @@ export default function Router() {
     },
     {
       element: <DashboardLayout />,
-      children: [{ path: "documentation", element: <DocumentationPage /> }],
+      children: [
+        { path: "documentation", element: <DocumentationPage /> },
+        { path: "events", element: <EventsPage /> },
+      ],
     },
     {
       path: "*",

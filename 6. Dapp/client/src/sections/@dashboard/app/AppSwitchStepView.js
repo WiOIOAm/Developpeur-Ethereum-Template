@@ -40,7 +40,7 @@ export default function AppSwitchStepView() {
       view = <StepOneRegisterVoters me={me} contract={contract} />;
       break;
     case "1":
-      view = <StepTwoRegisterProposals me={me} />;
+      view = <StepTwoRegisterProposals me={me} contract={contract} />;
       break;
     case "2":
       view = <StepThreeProposalsClosed me={me} />;

@@ -22204,10 +22204,214 @@
       "links": {},
       "address": "0x60a28A0991f82dC291BD906dDa9A6aea31714334",
       "transactionHash": "0xf5755350bdba99c2a1801d92af72f38814a7dab6e5a584c52df8670c6e769e67"
+    },
+    "1668728775180": {
+      "events": {
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        "0x92e393e9b54e2f801d3ea4beb0c5e71a21cc34a5d34b77d0fb8a3aa1650dc18f": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ],
+          "name": "ProposalRegistered",
+          "type": "event"
+        },
+        "0x4d99b957a2bc29a30ebd96a7be8e68fe50a3c701db28a91436490b7d53870ca4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "voter",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ],
+          "name": "Voted",
+          "type": "event"
+        },
+        "0xb6be2187d059cc2a55fe29e0e503b566e1e0f8c8780096e185429350acffd3dd": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "voterAddress",
+              "type": "address"
+            }
+          ],
+          "name": "VoterRegistered",
+          "type": "event"
+        },
+        "0x0a97a4ee45751e2abf3e4fc8946939630b11b371ea8ae39ccdc3056e98f5cc3f": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "enum Voting.WorkflowStatus",
+              "name": "previousStatus",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "internalType": "enum Voting.WorkflowStatus",
+              "name": "newStatus",
+              "type": "uint8"
+            }
+          ],
+          "name": "WorkflowStatusChange",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xdD138077432aD322fDD630DFbDdF18808ceF664e",
+      "transactionHash": "0x0a8a7a9458fe7521c35bf3bbb0760fbc70efa0c5df36b00eb36388f667432389"
+    },
+    "1668729944939": {
+      "events": {},
+      "links": {},
+      "address": "0x738334d0E8899caF9484aa505ceF02329De37Fb6",
+      "transactionHash": "0xd7b928aae9e022c021ddbd31791bebac92b8e598dbd7d6058617673ab338c420"
+    },
+    "1668765732421": {
+      "events": {},
+      "links": {},
+      "address": "0x75Dc9E5203e787771933C0669218F8e6542C5CA2",
+      "transactionHash": "0x46cfd7e1b1ff1a6778288f69f6c5a377ecd3bbbe6b816f2247462da9e2b1e899"
+    },
+    "1668790625158": {
+      "events": {},
+      "links": {},
+      "address": "0xc770f98b775DA8f40489aa2420a16aD851Bc2Ff1",
+      "transactionHash": "0xbb89fe3370203678cd0962c1579599908df0b827761afe62d8f97305fbc474b3"
+    },
+    "1668804445327": {
+      "events": {
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        "0x92e393e9b54e2f801d3ea4beb0c5e71a21cc34a5d34b77d0fb8a3aa1650dc18f": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ],
+          "name": "ProposalRegistered",
+          "type": "event"
+        },
+        "0x4d99b957a2bc29a30ebd96a7be8e68fe50a3c701db28a91436490b7d53870ca4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "voter",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ],
+          "name": "Voted",
+          "type": "event"
+        },
+        "0xb6be2187d059cc2a55fe29e0e503b566e1e0f8c8780096e185429350acffd3dd": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "voterAddress",
+              "type": "address"
+            }
+          ],
+          "name": "VoterRegistered",
+          "type": "event"
+        },
+        "0x0a97a4ee45751e2abf3e4fc8946939630b11b371ea8ae39ccdc3056e98f5cc3f": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "enum Voting.WorkflowStatus",
+              "name": "previousStatus",
+              "type": "uint8"
+            },
+            {
+              "indexed": false,
+              "internalType": "enum Voting.WorkflowStatus",
+              "name": "newStatus",
+              "type": "uint8"
+            }
+          ],
+          "name": "WorkflowStatusChange",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x1361995F8C20aCcAa93561953e1678d753078947",
+      "transactionHash": "0xd42f63b11e9ace6e727549f61a389e13c3b7e40815f79983b3eed7912adc5dcd"
+    },
+    "1668808911506": {
+      "events": {},
+      "links": {},
+      "address": "0x56bDDd3484Bb205c9D0Ee2Fb3E875dcAd6C41ff7",
+      "transactionHash": "0x3a9e42908c082b6a95fc5849915d40e33f8078c5a3792add71bff49091d0e3f3"
     }
   },
   "schemaVersion": "3.4.10",
-  "updatedAt": "2022-11-17T20:42:58.828Z",
+  "updatedAt": "2022-11-18T22:02:22.441Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "@lecascyril",

@@ -4,6 +4,7 @@
 1. [CI](#ci)
 1. [Documentation](#documentation)
 1. [Theming](#theming)
+1. [Emailing](#emailing)
 1. [Truffle Technologies](#truffle-technologies)
 1. [Installation](#installation)
 1. [Run tests](#run-testing)
@@ -47,7 +48,7 @@ Please find MD format documentation in the `./client/src/docs` directory.
 
 ### Storybook
 
-Please read developper documentation for ReactJS components in [storybook live application](https://636d3b6242ab8408095073c6-rsfrojhyuh.chromatic.com)
+Please read developper documentation for ReactJS components in [storybook live application](https://636d3b6242ab8408095073c6-usfybnfpnx.chromatic.com)
 
 To [publish your storybook project](https://storybook.js.org/docs/react/sharing/publish-storybook) in live add your `CHROMATIC_PROJECT_TOKEN` in `client/.env`
 
@@ -58,6 +59,23 @@ To [publish your storybook project](https://storybook.js.org/docs/react/sharing/
 Theme : Minimal Free – Client & Admin Dashboard
 
 This application is contruct with [MUI REACT Template](https://github.com/minimal-ui-kit/material-kit-react)
+
+## Emailing
+
+---
+
+Users can claim registration as voter.
+
+[EmailJs](https://dashboard.emailjs.com) is used to send email to contract owner
+
+Please check your configuration in `./client/.env`
+
+```
+REACT_APP_SERVICE_ID=service_xyz
+REACT_APP_TEMPLATE_ID=template_123
+REACT_APP_PUBLIC_KEY=xxx
+REACT_APP_OWNER_EMAIL=
+```
 
 ## Truffle Technologies
 

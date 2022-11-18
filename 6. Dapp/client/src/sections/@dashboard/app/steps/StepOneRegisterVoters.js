@@ -17,14 +17,16 @@ export default function StepOneRegisterVoters({ contract, me }) {
   const handleSubmitClaim = async (e) => {
     setIsClaimLoading(true);
     e.preventDefault();
-    if (!me?.isRegistred) {
+    if (!me?.isRegistred && !isClaimLoading) {
       const ethAddress = e.target[0].value;
       try {
         await emailjs.sendAddressToOwner(ethAddress);
         setIsClaimSended(true);
+        e.target.reset();
       } catch (error) {
         // catch metamask reject transaction
-        console.error(error);
+        alert(JSON.stringify(error));
+        console.error("handleSubmitClaim", error);
       }
     }
     setIsClaimLoading(false);
@@ -33,13 +35,15 @@ export default function StepOneRegisterVoters({ contract, me }) {
   const handleSubmitVoter = async (e) => {
     setIsLoading(true);
     e.preventDefault();
-    if (me?.isOwner) {
+    if (me?.isOwner && !isLoading) {
       const ethAddress = e.target[0].value;
       try {
         await contract.methods.addVoter(ethAddress).send({ from: me.address });
+        e.target.reset();
       } catch (error) {
         // catch metamask reject transaction
-        console.error(error);
+        alert(JSON.stringify(error));
+        console.error("handleSubmitVoter", error);
       }
     }
     setIsLoading(false);

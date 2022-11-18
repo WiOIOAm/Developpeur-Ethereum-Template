@@ -20,7 +20,6 @@ import {
 import useEth from "../contexts/EthContext/useEth";
 // components
 import { VerticalLinearStepper } from "../components/VerticalLinearStepper";
-
 // sections
 import {
   AppWidgetSummary,

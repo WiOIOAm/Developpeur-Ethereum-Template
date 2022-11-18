@@ -14,12 +14,15 @@ const initialState = {
   nbVotes: null,
   nbVoters: null,
   winningProposalId: null,
+  oldEvents: null,
+  freshEvent: null,
 };
 
 const reducer = (state, action) => {
   const { type, data } = action;
   switch (type) {
     case actions.init:
+    case actions.update:
       return { ...state, ...data };
     default:
       throw new Error("Undefined reducer action type");

@@ -6,7 +6,7 @@ import { reducer, actions, initialState } from "./state";
 function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const contractData = async (contract, account) => {
+  const getContractData = async (contract, account) => {
     // get contract Owner
     const owner = await contract.methods.owner().call({ from: account });
 
@@ -40,7 +40,31 @@ function EthProvider({ children }) {
       .workflowStatus()
       .call({ from: account });
 
-    return { me, currentStep, proposals, nbVotes, nbVoters, winningProposalId };
+    // get past events
+    let oldEvents = await contract.getPastEvents("allEvents", {
+      fromBlock: 0,
+      toBlock: "latest",
+    });
+    let oldies = [];
+    oldEvents.forEach(({ event, returnValues, blockHash, blockNumber, id }) => {
+      oldies.push({
+        event,
+        value: returnValues[0],
+        blockHash,
+        blockNumber,
+        id,
+      });
+    });
+
+    return {
+      me,
+      currentStep,
+      proposals,
+      nbVotes,
+      nbVoters,
+      winningProposalId,
+      oldEvents: oldies,
+    };
   };
 
   const init = useCallback(async (artifact) => {
@@ -54,7 +78,27 @@ function EthProvider({ children }) {
         address = artifact.networks[networkID].address;
         contract = new web3.eth.Contract(abi, address);
 
-        const appData = await contractData(contract, accounts[0]);
+        // get last event and update app data
+        await contract.events
+          .allEvents({ fromBlock: "earliest" })
+          .on("data", async ({ event, returnValues }) => {
+            const freshEvent = {
+              event,
+              value:
+                event === "WorkflowStatusChange"
+                  ? returnValues[1]
+                  : returnValues[0],
+            };
+            const appData = await getContractData(contract, accounts[0]);
+
+            dispatch({
+              type: actions.update,
+              data: { freshEvent, ...appData },
+            });
+          });
+
+        // get contract data
+        const appData = await getContractData(contract, accounts[0]);
         dispatch({
           type: actions.init,
           data: {
