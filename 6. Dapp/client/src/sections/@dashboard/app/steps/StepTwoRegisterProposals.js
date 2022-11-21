@@ -1,9 +1,17 @@
 import { useState } from "react";
 
 import { Typography } from "@mui/material";
+
+import ProposalsTable from "../../../../components/proposalsTable";
 import ProposalForm from "../../../../components/proposalForm";
 
-export default function StepTwoRegisterProposals({ contract, me }) {
+// context
+import useEth from "../../../../contexts/EthContext/useEth";
+
+export default function StepTwoRegisterProposals() {
+  const {
+    state: { me, contract, proposals },
+  } = useEth();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -43,6 +51,7 @@ export default function StepTwoRegisterProposals({ contract, me }) {
             Faire une proposition
           </Typography>
           <ProposalForm handleSubmit={handleSubmit} isLoading={isLoading} />
+          <ProposalsTable proposals={proposals} />
         </>
       )}
     </>

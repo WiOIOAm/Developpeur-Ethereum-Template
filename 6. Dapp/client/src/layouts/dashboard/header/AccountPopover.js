@@ -81,11 +81,10 @@ export default function AccountPopover() {
               {truncateEthAddress(me.address)}
             </Typography>
             <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-              {me.isOwner
-                ? "Animateur"
-                : me.isRegistered
-                ? "Votant"
-                : "utilisateur non enregistré"}
+              {me.isRegistered ? "Votant" : ""} {me.isOwner ? "Animateur" : ""}
+              {!me.isRegistered && !me.isOwner
+                ? "utilisateur non enregistré"
+                : ""}
             </Typography>
           </Box>
         )}

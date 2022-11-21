@@ -5,9 +5,14 @@ import ClaimForm from "../../../../components/claimForm/ClaimForm";
 
 import { Typography } from "@mui/material";
 
+// context
+import useEth from "../../../../contexts/EthContext/useEth";
 import useEmailjs from "../../../../hooks/useEmailjs";
 
-export default function StepOneRegisterVoters({ contract, me }) {
+export default function StepOneRegisterVoters() {
+  const {
+    state: { me, contract },
+  } = useEth();
   const emailjs = useEmailjs();
 
   const [isClaimLoading, setIsClaimLoading] = useState(false);
@@ -58,7 +63,7 @@ export default function StepOneRegisterVoters({ contract, me }) {
           <VoterForm handleSubmit={handleSubmitVoter} isLoading={isLoading} />
         </>
       )}
-      {!me.isRegistered && (
+      {!me.isRegistered && !me.isOwner && (
         <>
           <Typography variant="h4" sx={{ mb: 5 }}>
             Demander à devenir votant

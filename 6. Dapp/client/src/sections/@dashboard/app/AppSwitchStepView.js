@@ -27,35 +27,32 @@ export const NonRegistered = ({ me, currentStep }) => {
 
 export default function AppSwitchStepView() {
   const {
-    state: { me, currentStep, contract, winningProposalId },
+    state: { me, currentStep },
   } = useEth();
 
-  if (currentStep !== "0" && !me.isOwner && !me.isRegistered) {
+  if (currentStep !== "0" && !!me && !me.isOwner && !me.isRegistered) {
     return <NonRegistered me={me} currentStep={currentStep} />;
   }
 
   let view;
   switch (currentStep) {
     case "0":
-      view = <StepOneRegisterVoters me={me} contract={contract} />;
+      view = <StepOneRegisterVoters />;
       break;
     case "1":
-      view = <StepTwoRegisterProposals me={me} contract={contract} />;
+      view = <StepTwoRegisterProposals />;
       break;
     case "2":
-      view = <StepThreeProposalsClosed me={me} />;
+      view = <StepThreeProposalsClosed />;
       break;
     case "3":
-      view = <StepFourVoteOpen me={me} />;
+      view = <StepFourVoteOpen />;
       break;
     case "4":
-      view = <StepFiveVoteClosed me={me} />;
+      view = <StepFiveVoteClosed />;
       break;
     case "5":
-      view = <StepFiveVoteClosed me={me} />;
-      break;
-    case "6":
-      view = <StepSixTallyVote me={me} winningProposalId={winningProposalId} />;
+      view = <StepSixTallyVote />;
       break;
     default:
       view = <>pas de session correpondante </>;

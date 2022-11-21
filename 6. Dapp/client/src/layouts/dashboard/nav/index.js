@@ -54,9 +54,7 @@ export default function Nav({ openNav, onCloseNav }) {
         <Logo />
       </Box>
 
-      <Box sx={{ mb: 5, mx: 2.5 }}>
-        <MetamaskUser me={me} />
-      </Box>
+      <Box sx={{ mb: 5, mx: 2.5 }}>{me && <MetamaskUser me={me} />}</Box>
 
       <NavSection
         data={navConfig}

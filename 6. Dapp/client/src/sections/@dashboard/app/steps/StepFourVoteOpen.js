@@ -1,6 +1,32 @@
+import { useState } from "react";
+
 import { Typography } from "@mui/material";
 
-export default function StepFourVoteOpen({ me }) {
+import ProposalsTable from "../../../../components/proposalsTable";
+
+// context
+import useEth from "../../../../contexts/EthContext/useEth";
+
+export default function StepFourVoteOpen() {
+  const {
+    state: { me, contract, proposals },
+  } = useEth();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (proposalId) => {
+    setIsLoading(true);
+    if (me.votedProposalId !== proposalId && !isLoading) {
+      try {
+        await contract.methods.setVote(1).send({ from: me.address });
+      } catch (error) {
+        // catch metamask reject transaction
+        alert(JSON.stringify(error));
+        console.error("handleSubmitFour", error);
+      }
+    }
+    setIsLoading(false);
+  };
+
   return (
     <>
       {me.isOwner && (
@@ -21,7 +47,13 @@ export default function StepFourVoteOpen({ me }) {
           <Typography variant="body" sx={{ mb: 5 }}>
             Consultez les propositions ci-dessous
           </Typography>
-          {/* <ProposalList votingSession={true} /> */}
+          <ProposalsTable
+            votedId={me.votedProposalId || null}
+            proposals={proposals}
+            isLoading={isLoading}
+            handleSubmit={handleSubmit}
+            voteIsOpen={true}
+          />
         </>
       )}
     </>

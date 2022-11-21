@@ -1,30 +1,40 @@
 import { Typography } from "@mui/material";
 
-export default function StepSixTallyVote({ me, winningProposalId }) {
+import ProposalsTable from "../../../../components/proposalsTable";
+// context
+import useEth from "../../../../contexts/EthContext/useEth";
+
+export default function StepSixTallyVote() {
+  const {
+    state: { me, winningProposalId, proposals },
+  } = useEth();
+
   return (
     <>
-      {me.isOwner && (
+      {(me.isOwner || me.isRegistered) && (
         <>
           <Typography variant="h4" sx={{ mb: 5 }}>
             Le vainqueur est annoncé
           </Typography>
-          <Typography variant="body" sx={{ mb: 5 }}>
-            le vainqueur définitif est {winningProposalId}
+          <Typography variant="subtitle1" sx={{ mb: 5 }}>
+            {`Le vainqueur définitif est : "${
+              proposals[winningProposalId]?.description ||
+              "Erreur de récupération de la proposition"
+            }"`}
           </Typography>
         </>
       )}
+
       {me.isRegistered && (
         <>
-          <Typography variant="h4" sx={{ mb: 5 }}>
-            Le vainqueur est annoncé
-          </Typography>
           <Typography variant="body" sx={{ mb: 5 }}>
-            le vainqueur définitif est {winningProposalId}
+            Consultez le détail des votes ci-dessous
           </Typography>
-          <Typography variant="body" sx={{ mb: 5 }}>
-            Consultez les propositions ci-dessous
-          </Typography>
-          {/* <ProposalList /> */}
+          <ProposalsTable
+            proposals={proposals}
+            votedId={me.votedProposalId}
+            winnerIsKnow={true}
+          />
         </>
       )}
     </>

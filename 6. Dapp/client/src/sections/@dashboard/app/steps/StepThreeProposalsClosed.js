@@ -1,6 +1,14 @@
 import { Typography } from "@mui/material";
 
-export default function StepThreeProposalsClosed({ me }) {
+import ProposalsTable from "../../../../components/proposalsTable";
+// context
+import useEth from "../../../../contexts/EthContext/useEth";
+
+export default function StepThreeProposalsClosed() {
+  const {
+    state: { me, proposals },
+  } = useEth();
+
   return (
     <>
       {me.isOwner && (
@@ -21,7 +29,7 @@ export default function StepThreeProposalsClosed({ me }) {
           <Typography variant="body" sx={{ mb: 5 }}>
             Consultez les propositions ci dessous
           </Typography>
-          {/* <ProposalList /> */}
+          <ProposalsTable proposals={proposals} />
         </>
       )}
     </>

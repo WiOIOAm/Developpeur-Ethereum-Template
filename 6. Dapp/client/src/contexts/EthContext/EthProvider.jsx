@@ -15,9 +15,9 @@ function EthProvider({ children }) {
     const me = {
       address: account,
       isOwner: account === owner,
-      isRegistered: getSelfVoter?.isRegistered,
-      hasVoted: getSelfVoter?.hasVoted,
-      votedProposalId: getSelfVoter?.votedProposalId,
+      isRegistered: !!getSelfVoter?.isRegistered,
+      hasVoted: !!getSelfVoter?.hasVoted,
+      votedProposalId: parseInt(getSelfVoter?.votedProposalId || 0),
     };
 
     let proposals = false;
@@ -26,7 +26,7 @@ function EthProvider({ children }) {
       // get proposals an count of votes
       proposals = await contract.methods.getProposals().call({ from: account });
 
-      nbVotes = proposals?.reduce((prev, curr) => prev.voteCount + curr, 0);
+      nbVotes = proposals?.reduce((prev, curr) => prev + parseInt(curr[1]), 0);
     }
 
     // get count of voters
