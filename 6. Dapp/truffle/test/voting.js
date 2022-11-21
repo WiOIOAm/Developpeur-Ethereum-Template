@@ -300,6 +300,9 @@ contract("Voting", function (accounts) {
       });
       expect(firstProposal.voteCount).to.be.bignumber.equals(BN(1));
     });
+    it("assert adding vote calculate winnerID", async () => {
+      expect(VotingInstance.winningProposalID.call(), 2);
+    });
     it("revert if voter has already vote", async () => {
       await expectRevert(
         VotingInstance.setVote(1, { from: voter1 }),

@@ -139,9 +139,12 @@ Voter object
 	<summary><strong>Source Code</strong></summary>
 
 ```javascript
-function getVoter(
-        address _addr
-    ) external view onlyVoters returns (Voter memory) {
+function getVoter(address _addr)
+        external
+        view
+        onlyVoters
+        returns (Voter memory)
+    {
         return voters[_addr];
     }
 ```
@@ -200,9 +203,12 @@ Proposal object
 	<summary><strong>Source Code</strong></summary>
 
 ```javascript
-function getOneProposal(
-        uint256 _id
-    ) external view onlyVoters returns (Proposal memory) {
+function getOneProposal(uint256 _id)
+        external
+        view
+        onlyVoters
+        returns (Proposal memory)
+    {
         return proposalsArray[_id];
     }
 ```
@@ -318,6 +324,9 @@ function setVote(uint256 _id) external onlyVoters {
         voters[msg.sender].hasVoted = true;
         proposalsArray[_id].voteCount++;
 
+        if (proposalsArray[_id].voteCount > winningProposalID) {
+            winningProposalID = _id;
+        }
         emit Voted(msg.sender, _id);
     }
 ```
@@ -459,16 +468,6 @@ function tallyVotes() external onlyOwner {
             workflowStatus == WorkflowStatus.VotingSessionEnded,
             "Current status is not voting session ended"
         );
-        uint256 _winningProposalId;
-        for (uint256 p = 0; p < proposalsArray.length; p++) {
-            if (
-                proposalsArray[p].voteCount >
-                proposalsArray[_winningProposalId].voteCount
-            ) {
-                _winningProposalId = p;
-            }
-        }
-        winningProposalID = _winningProposalId;
 
         workflowStatus = WorkflowStatus.VotesTallied;
         emit WorkflowStatusChange(

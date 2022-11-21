@@ -88,7 +88,7 @@ export default function Nav({ openNav, onCloseNav }) {
           </Box>
 
           <Button
-            href="https://julie-ramadanoski.dev"
+            href="https://www.linkedin.com/in/julie-ramadanoski/"
             target="_blank"
             variant="contained"
           >

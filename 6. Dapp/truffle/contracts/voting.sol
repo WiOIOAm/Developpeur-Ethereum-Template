@@ -144,7 +144,7 @@ contract Voting is Ownable {
 
     /**
      * @notice Voters vote once for a a proposal at VotingSessionStarted session
-     * @dev Register the proposal id in voter object
+     * @dev Register the proposal id in voter object, calculate temporary winner
      * @param _id The id of proposal
      */
     function setVote(uint256 _id) external onlyVoters {
@@ -159,6 +159,9 @@ contract Voting is Ownable {
         voters[msg.sender].hasVoted = true;
         proposalsArray[_id].voteCount++;
 
+        if (proposalsArray[_id].voteCount > winningProposalID) {
+            winningProposalID = _id;
+        }
         emit Voted(msg.sender, _id);
     }
 
@@ -239,16 +242,6 @@ contract Voting is Ownable {
             workflowStatus == WorkflowStatus.VotingSessionEnded,
             "Current status is not voting session ended"
         );
-        uint256 _winningProposalId;
-        for (uint256 p = 0; p < proposalsArray.length; p++) {
-            if (
-                proposalsArray[p].voteCount >
-                proposalsArray[_winningProposalId].voteCount
-            ) {
-                _winningProposalId = p;
-            }
-        }
-        winningProposalID = _winningProposalId;
 
         workflowStatus = WorkflowStatus.VotesTallied;
         emit WorkflowStatusChange(
