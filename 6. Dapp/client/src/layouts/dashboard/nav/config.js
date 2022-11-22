@@ -38,7 +38,7 @@ const navConfig = [
   {
     title: "storybook",
     href: true,
-    path: "https://636d3b6242ab8408095073c6-dftsxbqcrm.chromatic.com",
+    path: "https://636d3b6242ab8408095073c6-mjglpmolqb.chromatic.com",
     icon: icon("ic_lock"),
     showToOwner: true,
     showToRegistered: true,

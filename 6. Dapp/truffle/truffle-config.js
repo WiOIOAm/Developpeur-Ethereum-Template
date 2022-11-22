@@ -18,11 +18,11 @@
  *
  */
 
-// require('dotenv').config();
-// const mnemonic = process.env["MNEMONIC"];
-// const infuraProjectId = process.env["INFURA_PROJECT_ID"];
+require("dotenv").config();
+const mnemonic = process.env["MNEMONIC"];
+const infuraProjectId = process.env["INFURA_PROJECT_ID"];
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 module.exports = {
   /**
@@ -64,18 +64,20 @@ module.exports = {
     goerli: {
       provider: () =>
         new HDWalletProvider(
-          MNEMONIC,
-          `https://goerli.infura.io/v3/${PROJECT_ID}`
+          mnemonic,
+          `https://goerli.infura.io/v3/${infuraProjectId}`
         ),
       network_id: 5, // Goerli's id
       confirmations: 2, // # of confirmations to wait between deployments. (default: 0)
       timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
       skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
+      gas: "3000000", // blocklimit
+      gasPrice: "43271607952", //base fee per gas
     },
     matic: {
       provider: () =>
         new HDWalletProvider(
-          MNEMONIC,
+          mnemonic,
           `https://eth-mainnet.g.alchemy.com/v2/${MUMB_PROJECTID}`
         ),
       network_id: 80001,

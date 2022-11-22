@@ -16,6 +16,7 @@ const initialState = {
   winningProposalId: null,
   oldEvents: null,
   freshEvent: null,
+  allEvents: null,
 };
 
 const reducer = (state, action) => {
