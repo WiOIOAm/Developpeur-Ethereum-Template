@@ -388,7 +388,7 @@ export default function Ecommerce() {
                   <img
                     alt="..."
                     className="path path3"
-                    src={require("assets/img/shape-s.png")}
+                    src={require("assets/images/shape-s.png")}
                   />
                   {/* SVG Illustration */}
                   <figure className=" header-shape">
