@@ -8,8 +8,8 @@
 # git add docs/.
 # yarn test
 
-# publish documentation storybook
-cd 6.\ Dapp/client/
+# publish documentation storybookw
+cd 8.\ NFT/
 yarn run chromatic --auto-accept-changes
 
 # truffle projet
