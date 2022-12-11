@@ -1,5 +1,5 @@
 {
-    "pathToRoot": "../../6. Dapp/",
+    "pathToRoot": "../../8. NFT/",
     "outputPath": "../client/src/docs",
     "rootContract": "contracts",
     "buildFolder": "client/src/contracts",
