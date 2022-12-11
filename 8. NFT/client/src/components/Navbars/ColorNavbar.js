@@ -16,9 +16,10 @@
 */
 import React from "react";
 import { Link } from "react-router-dom";
+import { Web3Button } from "@web3modal/react";
+
 // reactstrap components
 import {
-  Button,
   UncontrolledCollapse,
   NavbarBrand,
   Navbar,
@@ -33,12 +34,14 @@ import {
 
 export default function ColorNavbar() {
   const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
+
   React.useEffect(() => {
     window.addEventListener("scroll", changeNavbarColor);
     return function cleanup() {
       window.removeEventListener("scroll", changeNavbarColor);
     };
   }, []);
+
   const changeNavbarColor = () => {
     if (
       document.documentElement.scrollTop > 299 ||
@@ -98,15 +101,7 @@ export default function ColorNavbar() {
                 <NavLink href="/a-propos">A propos</NavLink>
               </NavItem>
               <NavItem>
-                <Button
-                  className="nav-link"
-                  color="default"
-                  href="/"
-                  size="sm"
-                  target="_blank"
-                >
-                  <p>Wallet Connect</p>
-                </Button>
+                <Web3Button />
               </NavItem>
             </Nav>
           </UncontrolledCollapse>
