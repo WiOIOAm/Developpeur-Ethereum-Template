@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.17;
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 import "./figo.sol";
 import "./IERC20FIGO.sol";
 import "./ERC1155TICKET.sol";
@@ -84,12 +85,9 @@ contract Fillgood is Ownable {
      * @dev Getter on partners mapping
      * @return Partner array
      */
-    function getPartnerByAddress(address _address)
-        external
-        view
-        onlyOwner
-        returns (Partner memory)
-    {
+    function getPartnerByAddress(
+        address _address
+    ) external view onlyOwner returns (Partner memory) {
         return partners[_address];
     }
 
@@ -98,11 +96,9 @@ contract Fillgood is Ownable {
      * @dev Getter on partnersAddress mapping
      * @return address address
      */
-    function getPartnerAddressById(uint256 _id)
-        external
-        view
-        returns (address)
-    {
+    function getPartnerAddressById(
+        uint256 _id
+    ) external view returns (address) {
         return partnersAddresses[_id];
     }
 

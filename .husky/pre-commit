@@ -15,10 +15,10 @@ cd 8.\ NFT/client
 # truffle projet
 cd ../truffle/
 # lint
-# yarn prettier:solidity
+yarn prettier:solidity
 git add contracts/.
 # testing
-# yarn test
+yarn test
 # generate solidity documentation
-# yarn docgen
-# git add ../client/src/docs/
+yarn docgen
+git add ../client/src/docs/
