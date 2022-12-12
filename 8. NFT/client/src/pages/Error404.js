@@ -43,7 +43,7 @@ export default function Error400() {
             className="page-header-image"
             style={{
               backgroundImage:
-                "url(" + require("assets/img/braden-collum.jpg") + ")"
+                "url(" + require("assets/images/braden-collum.jpg") + ")",
             }}
           />
           <Container>
