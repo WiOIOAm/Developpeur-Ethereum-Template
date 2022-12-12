@@ -21,6 +21,7 @@
 require("dotenv").config();
 const mnemonic = process.env["MNEMONIC"];
 const infuraProjectId = process.env["INFURA_PROJECT_ID"];
+const MUMB_PROJECTID = process.env["MUMB_PROJECTID"];
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
@@ -78,12 +79,13 @@ module.exports = {
       provider: () =>
         new HDWalletProvider(
           mnemonic,
-          `https://eth-mainnet.g.alchemy.com/v2/${MUMB_PROJECTID}`
+          `https://polygon-mumbai.g.alchemy.com/v2/${MUMB_PROJECTID}`
         ),
       network_id: 80001,
       confirmations: 2,
       timeoutBlocks: 200,
       skipDryRun: true,
+      from: "0x98Ce2563bAEE6D8b885fE5f44f5f1Da9A7e8c8D5",
     },
     //
     // Useful for private networks

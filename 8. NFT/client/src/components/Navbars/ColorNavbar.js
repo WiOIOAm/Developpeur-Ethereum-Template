@@ -30,6 +30,7 @@ import {
   Row,
   Col,
   UncontrolledTooltip,
+  Button,
 } from "reactstrap";
 
 export default function ColorNavbar() {
@@ -99,6 +100,16 @@ export default function ColorNavbar() {
               </NavItem>
               <NavItem className="active">
                 <NavLink href="/a-propos">A propos</NavLink>
+              </NavItem>
+              <NavItem>
+                <Button
+                  className="nav-link"
+                  color="default"
+                  href="/dashboard"
+                  size="sm"
+                >
+                  <p>Dashboard</p>
+                </Button>
               </NavItem>
               <NavItem>
                 <Web3Button />

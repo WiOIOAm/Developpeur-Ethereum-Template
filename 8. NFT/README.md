@@ -24,6 +24,8 @@ Alyra's final certification project will be on the imposed figure of the NFT mar
 
 [Accès au depot git](https://github.com/julie-ramadanoski/Developpeur-Ethereum-Template/tree/6799f1c172e5dba8f87b9f6627c2f6b16a0ee507/8.%20NFT)
 
+[Vidéo de démo](https://youtu.be/IFG3l74yJP4)
+
 ### Views
 
 ![landing page Fillgood](https://julie-ramadanoski.dev/wp-content/uploads/2022/12/screenshootlanding.png)

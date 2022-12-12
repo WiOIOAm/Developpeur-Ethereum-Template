@@ -8,7 +8,9 @@ import {
 
 import { Web3Modal } from "@web3modal/react";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { polygonMumbai } from "wagmi/chains";
+import { polygonMumbai, localhost } from "wagmi/chains";
+import { publicProvider } from "wagmi/providers/public";
+import { infuraProvider } from "wagmi/providers/infura";
 
 // styles
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -20,14 +22,22 @@ import "assets/demo/react-demo.css";
 
 // components
 import Ecommerce from "./pages/Ecommerce.js";
+import Error404 from "./pages/Error404.js";
+import AccountSettings from "./pages/AccountSettings.js";
+import Agenda from "./pages/Agenda.js";
 
 function App() {
-  const chains = [polygonMumbai];
+  const chains = [polygonMumbai, localhost];
   const walletProjectId = process.env.REACT_APP_WALLETCONNECT;
   // Wagmi client
   const { provider } = configureChains(chains, [
-    walletConnectProvider({ projectId: walletProjectId }),
+    walletConnectProvider({
+      projectId: walletProjectId,
+    }),
+    infuraProvider({ apiKey: process.env.REACT_APP_INFURA_ID }),
+    publicProvider(),
   ]);
+
   const wagmiClient = createClient({
     autoConnect: true,
     connectors: modalConnectors({ appName: "web3Modal", chains }),
@@ -41,6 +51,9 @@ function App() {
       <WagmiConfig client={wagmiClient}>
         <Routes>
           <Route path="/" element={<Ecommerce />} />
+          <Route path="/dashboard" element={<AccountSettings />} />
+          <Route path="/agenda" element={<Agenda />} />
+          <Route path="*" element={<Error404 />} />
         </Routes>
       </WagmiConfig>
 
