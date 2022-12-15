@@ -2,7 +2,6 @@ const Fillgood = artifacts.require("fillgood.sol");
 const Figo = artifacts.require("Figo");
 const ExperienceTicketing = artifacts.require("ExperienceTicketing");
 
-const truffleAssert = require("truffle-assertions");
 const { BN, expectRevert, expectEvent } = require("@openzeppelin/test-helpers");
 const { expect } = require("chai");
 
@@ -49,8 +48,8 @@ contract("Fillgood", function (accounts) {
   describe("Become Partner", function () {
     it("should assert add a partner when buy a pack", async function () {
       const res = await fillgood.buyPack(1, { from: userGold }); //gold pack à 2500 FIGO
-      const myUserGold = await fillgood.getPartnerByAddress(userGold, {
-        from: owner,
+      const myUserGold = await fillgood.getSelfAsPartner({
+        from: userGold,
       });
 
       expectEvent(res, "offerSold", {
@@ -115,7 +114,7 @@ contract("Fillgood", function (accounts) {
       });
       const expectedPartnerId = 1;
 
-      const experience = await fillgood.experiences.call(1);
+      const experience = await fillgood.getExperience(1);
       expect(experience).that.have.any.keys(
         "partnerId",
         "experienceId",
@@ -144,11 +143,22 @@ contract("Fillgood", function (accounts) {
       expect(experience.meetingPlace).to.be.string(
         "3 rue colonel Roux 05000 GAP"
       );
-
-      const partnersAddress = await fillgood.getPartnerAddressById.call(
+    });
+    it("should assert add a partner", async function () {
+      const expectedPartnerId = "1";
+      const partnersAddress = await fillgood.getPartnerAddressById(
         expectedPartnerId
       );
       expect(partnersAddress).to.be.equals(userGold);
+
+      const partner = await fillgood.getSelfAsPartner({
+        from: userGold,
+      });
+
+      expect(partner.experiencesIds)
+        .to.be.an("array")
+        .to.have.lengthOf(1)
+        .to.include.ordered.members([expectedPartnerId]);
     });
 
     /// TODO   on ne peut pas créer d'expérience si je suis premium et que je dépasse mon quota d'expérience par mois
@@ -220,6 +230,87 @@ contract("Fillgood", function (accounts) {
     });
   });
 
+  /**
+   * GETTERS
+   */
+  describe("Getter on Partners", function () {
+    beforeEach(async function () {
+      await fillgood.buyPack(1, { from: userGold });
+      await fillgood.addExperience(
+        10, //_nbTickets,
+        2000000000000000000n, // _price, 2 FIGO
+        1000000000000000000n, //_reward 1 FIGO
+        1702314345, //_date,  10/12/2023
+        "Séance de muscu au bureau", // _name,
+        "Fitness", // _experienceType,
+        "3 rue colonel Roux 05000 GAP", // _meetingPlace, mon bureau
+        { from: userGold }
+      );
+      await fillgood.addExperience(
+        50, //_nbTickets,
+        10000000000000000000n, // _price, 2 FIGO
+        2000000000000000000n, //_reward 1 FIGO
+        1702314345, //_date,  10/12/2023
+        "Sortie a l'australienne ", // _name,
+        "Triathon", // _experienceType,
+        "Embrun", // _meetingPlace, mon bureau
+        { from: user2 }
+      );
+      await fillgood.addExperience(
+        50, //_nbTickets,
+        10000000000000000000n, // _price, 2 FIGO
+        2000000000000000000n, //_reward 1 FIGO
+        1702314345, //_date,  10/12/2023
+        "Match poussin FFF Chorges", // _name,
+        "Football", // _experienceType,
+        "Stade Chorges", // _meetingPlace, mon bureau
+        { from: user2 }
+      );
+    });
+    it("should get partner userGold", async function () {
+      const partner = await fillgood.getSelfAsPartner({ from: userGold });
+      expect(partner).that.have.any.keys(
+        "isRegister",
+        "partnerId",
+        "name",
+        "offer",
+        "experiencesIds"
+      );
+      expect(partner.isRegister).to.be.true;
+      expect(partner.partnerId).to.be.bignumber.equals(BN(1));
+      expect(partner.name).to.be.string("");
+      expect(partner.offer).to.be.bignumber.equals(BN(1)); // 2500 + 18 decimales
+      expect(partner.experiencesIds)
+        .to.be.an("array")
+        .to.have.lengthOf(1)
+        .to.include.ordered.members(["1"]);
+    });
+    it("should get partner user2", async function () {
+      const partner = await fillgood.getSelfAsPartner({ from: user2 });
+      expect(partner.isRegister).to.be.true;
+      expect(partner.partnerId).to.be.bignumber.equals(BN(2));
+      expect(partner.name).to.be.string("");
+      expect(partner.offer).to.be.bignumber.equals(BN(0)); // 2500 + 18 decimales
+      expect(partner.experiencesIds)
+        .to.be.an("array")
+        .to.have.lengthOf(2)
+        .to.include.ordered.members(["2", "3"]);
+    });
+    it("should get partner user3 is empty", async function () {
+      const partner = await fillgood.getSelfAsPartner({ from: user3 });
+      expect(partner.isRegister).to.be.false;
+      expect(partner.partnerId).to.be.bignumber.equals(BN(0));
+      expect(partner.name).to.be.string("");
+      expect(partner.offer).to.be.bignumber.equals(BN(0)); // 2500 + 18 decimales
+      expect(partner.experiencesIds).to.be.an("array").to.have.lengthOf(0);
+    });
+    it("should get partners by adress id", async function () {
+      const partner1 = await fillgood.getPartnerAddressById(1);
+      const partner2 = await fillgood.getPartnerAddressById(2);
+      expect(partner1).to.be.bignumber.equals(userGold);
+      expect(partner2).to.be.bignumber.equals(user2);
+    });
+  });
   /// récupérer ma preuve de participation
   // je scanne le QRCODE, fillgod sait que j'ai participé
   // je demande mon poap si j'ai scanné le QRCODE je mint le poap de l'organisateur, fillgood me rembourse la récompense

@@ -1,20 +1,20 @@
 import React from "react";
-// import { useContractRead } from "wagmi";
 
 // reactstrap components
-import { Button, Table } from "reactstrap";
+import { Table } from "reactstrap";
 
 // context
 import useEth from "contexts/EthContext/useEth";
 
-export default function CreatedExperiences() {
+export default function Participations() {
   const {
-    state: { errorMessage, isLoading, me },
+    state: { errorMessage, isLoading, me, experiences },
   } = useEth();
+  console.log("Participations-experiences", experiences);
   return (
     <>
       <header>
-        <h2 className="text-uppercase">Mes expériences crées</h2>
+        <h2 className="text-uppercase">Mes participations</h2>
       </header>
       <hr className="line-info" />
       {isLoading && <p>Chargement..</p>}
@@ -27,27 +27,25 @@ export default function CreatedExperiences() {
               <th scope="col">lieu</th>
               <th scope="col">prix</th>
               <th scope="col">récompense</th>
-              <th scope="col">jauge</th>
+              <th scope="col">POAP</th>
             </tr>
           </thead>
           <tbody>
-            {me?.experiences?.map(
-              ({
-                name,
-                nbTickets,
-                nbTicketsSold,
-                price,
-                reward,
-                meetingPlace,
-                date,
-              }) => (
+            {me?.participations?.map(
+              ({ proofScanned, name, price, reward, meetingPlace, date }) => (
                 <tr>
                   <td>{name}</td>
-                  <td>{}</td>
+                  <td></td>
                   <td>{meetingPlace}</td>
-                  <td className="text-center">{price}</td>
-                  <td>{reward}</td>
-                  <td>{`${nbTicketsSold}/${nbTickets}`}</td>
+                  <td className="text-center">{price} $FIGO</td>
+                  <td>
+                    {reward} {proofScanned && "remboursés"}
+                  </td>
+                  <td>
+                    {proofScanned
+                      ? "Récupérez votre preuve de participation"
+                      : "Scannez ici votre preuve de participation"}
+                  </td>
                 </tr>
               )
             )}

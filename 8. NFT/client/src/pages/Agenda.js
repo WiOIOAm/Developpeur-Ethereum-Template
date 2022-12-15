@@ -15,6 +15,7 @@
 
 */
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 // reactstrap components
 import {
   Button,
@@ -29,29 +30,24 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 
-// core components
-import ColorNavbar from "components/Navbars/ColorNavbar.js";
-import { useContractRead } from "wagmi";
-
-import DemoFooter from "components/Footers/DemoFooter.js";
-
-import Fillgood from "contracts/Fillgood.json";
+// context
+import useEth from "contexts/EthContext/useEth";
 
 export default function ProductPage() {
-  const { abi } = Fillgood;
-  const { data, isError, isLoading, error } = useContractRead({
-    address: "0x3430C709dE5dB20a4dF942A132418D511efBDe9F",
-    abi,
-    functionName: "experiences",
-    args: [0],
-
-    onSuccess(data) {
-      console.log("Success", data);
+  const navigate = useNavigate();
+  const {
+    state: {
+      errorMessage,
+      isLoading,
+      experiences,
+      networkID,
+      artifact,
+      contract,
+      figoContract,
+      me,
     },
-    onError(error) {
-      console.log("Error", error);
-    },
-  });
+    dispatch,
+  } = useEth();
   const wrapper = React.useRef(null);
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -62,10 +58,35 @@ export default function ProductPage() {
       document.body.classList.remove("product-page");
     };
   }, []);
+  const sport = ["Handall", "RollerDerby", "Enduro", "Escalade"];
+  const handleRegister = async (experienceId, price) => {
+    if (!isLoading && me) {
+      try {
+        dispatch({ type: "LOADING", data: true });
+        const figoAddress = artifact.networks[networkID].address;
+        const approve = await figoContract.methods
+          .approve(figoAddress, parseInt(price))
+          .send({ from: me.address });
 
+        console.log("APPROVE", approve);
+        const res = await contract.methods
+          .registerParticipant(experienceId)
+          .send({ from: me.address });
+
+        dispatch({ type: "SUCCESS", data: res.status });
+        navigate("/dashboard");
+      } catch (error) {
+        console.error("handleRegister", error);
+        dispatch({
+          type: "ERROR",
+          data: error.message,
+        });
+      }
+      dispatch({ type: "LOADING", data: false });
+    }
+  };
   return (
     <>
-      <ColorNavbar />
       <div className="wrapper" ref={wrapper}>
         <div className="section">
           <img
@@ -76,24 +97,29 @@ export default function ProductPage() {
           <Container>
             <Col md="8">
               <h2 className="title">Agenda</h2>
-              {isLoading && <h3>Chargement en cours...</h3>}
+              {errorMessage}
             </Col>
             <Row>
-              <Col lg="3" md="6">
-                {!!data && (
-                  <Card className="card-product">
+              {experiences?.map((experience) => (
+                <Col lg="3" md="6">
+                  <Card
+                    className="card-product"
+                    onClick={() =>
+                      handleRegister(experience.experienceId, experience.price)
+                    }
+                  >
                     <div className="card-image">
-                      <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                      <Link to={"/experience/${experienceId}"}>
                         <img
                           alt="..."
                           className="img rounded"
                           src={require("assets/images/sprint.jpg")}
                         />
-                      </a>
+                      </Link>
                     </div>
                     <CardBody>
                       <h6 className="category text-warning">
-                        {data.experienceType}
+                        {sport[experience.experienceType.toString()]}
                       </h6>
                       <CardTitle tag="h4">
                         <CardLink
@@ -101,18 +127,21 @@ export default function ProductPage() {
                           href="#pablo"
                           onClick={(e) => e.preventDefault()}
                         >
-                          {data.name}
+                          {experience.name}
                         </CardLink>
                       </CardTitle>
                       <div className="card-description">
-                        {data.meetingPlace}
-                        {data.nbTicketsSold} vendus
+                        {experience.meetingPlace}
+                        <br />
+                        {experience.nbTicketsSold} vendus
                         {" / "}
-                        {data.nbTickets} places
+                        {experience.nbTickets} places
                       </div>
                       <CardFooter>
                         <div className="price-container">
-                          <span className="price">{data.price.toNumber()}</span>
+                          <span className="price">
+                            {experience.price} $FIGO
+                          </span>
                         </div>
                         <Button
                           className="btn-simple btn-icon btn-round pull-right"
@@ -126,17 +155,16 @@ export default function ProductPage() {
                           placement="left"
                           target="tooltip320714545"
                         >
-                          Récompense :{data.reward.toNumber()}
+                          Récompense :{experience.reward} $FIGO
                         </UncontrolledTooltip>
                       </CardFooter>
                     </CardBody>
                   </Card>
-                )}
-              </Col>
+                </Col>
+              ))}
             </Row>
           </Container>
         </div>
-        <DemoFooter />
       </div>
     </>
   );

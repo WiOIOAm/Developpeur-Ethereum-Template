@@ -34,11 +34,11 @@ struct Pack {
 
 ```js
 struct Partner {
+ bool isRegister,
  uint256 partnerId,
  string name,
- uint256[] experiencesIds,
- bool isRegister,
- enum Fillgood.OfferType offer
+ enum Fillgood.OfferType offer,
+ uint256[] experiencesIds
 }
 ```
 
@@ -73,7 +73,8 @@ struct Ticket {
 ```js
 struct Participant {
  uint256 participantId,
- mapping(uint256 => struct Fillgood.Ticket) tickets
+ mapping(uint256 => struct Fillgood.Ticket) tickets,
+ uint256[] ticketsIds
 }
 ```
 
@@ -90,11 +91,12 @@ struct Counters.Counter public partnerIds;
 struct Counters.Counter public experienceIds;
 struct Counters.Counter public participantsIds;
 
+//internal members
+mapping(address => struct Fillgood.Partner) internal partners;
+
 //private members
-mapping(address => struct Fillgood.Partner) private partners;
 mapping(address => struct Fillgood.Participant) private participants;
 mapping(uint256 => address) private partnersAddresses;
-mapping(uint256 => address) private participantsAddresses;
 
 ```
 
@@ -109,9 +111,13 @@ event ParticipantRegistered(address  participantAddress, string  experienceName)
 ## Functions
 
 - [constructor(address _figoaddress, address _ticketAddress)](#constructor)
-- [getPartnerByAddress(address _address)](#getpartnerbyaddress)
+- [getSelfAsPartner()](#getselfaspartner)
 - [getPartnerAddressById(uint256 _id)](#getpartneraddressbyid)
+- [getExperience(uint256 idExperience)](#getexperience)
+- [getParticipationsIds()](#getparticipationsids)
+- [getParticipation(uint256 experienceId)](#getparticipation)
 - [buyPack(uint8 _offerType)](#buypack)
+- [_registerPartner(address _sender)](#_registerpartner)
 - [addExperience(uint8 _nbTickets, uint256 _price, uint256 _reward, uint256 _date, string _name, string _experienceType, string _meetingPlace)](#addexperience)
 - [registerParticipant(uint256 _experienceId)](#registerparticipant)
 
@@ -150,35 +156,21 @@ constructor(address _figoaddress, address _ticketAddress) {
 
 ---    
 
-> ### getPartnerByAddress
+> ### getSelfAsPartner
 
-Get partner by address
+Get self as partner
 
 ```solidity
-function getPartnerByAddress(address _address) external view onlyOwner 
+function getSelfAsPartner() external view
 returns(struct Fillgood.Partner)
 ```
-
-**Arguments**
-
-| Name        | Type           | Description  |
-
-| ------------- |------------- | -----|
-
-| _address | address |  | 
-
-**Returns**
-
-Partner array
 
 <details>
 	<summary><strong>Source Code</strong></summary>
 
 ```javascript
-function getPartnerByAddress(
-        address _address
-    ) external view onlyOwner returns (Partner memory) {
-        return partners[_address];
+function getSelfAsPartner() external view returns (Partner memory) {
+        return partners[msg.sender];
     }
 ```
 </details>
@@ -188,6 +180,7 @@ function getPartnerByAddress(
 > ### getPartnerAddressById
 
 Get partner by id
+ use to get a partner detail in experience
 
 ```solidity
 function getPartnerAddressById(uint256 _id) external view
@@ -210,10 +203,109 @@ address address
 	<summary><strong>Source Code</strong></summary>
 
 ```javascript
-function getPartnerAddressById(
-        uint256 _id
-    ) external view returns (address) {
+function getPartnerAddressById(uint256 _id)
+        external
+        view
+        returns (address)
+    {
         return partnersAddresses[_id];
+    }
+```
+</details>
+
+---    
+
+> ### getExperience
+
+Get an Experience by id
+
+```solidity
+function getExperience(uint256 idExperience) external view
+returns(struct Fillgood.Experience)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+
+| ------------- |------------- | -----|
+
+| idExperience | uint256 |  | 
+
+**Returns**
+
+Experience object
+
+<details>
+	<summary><strong>Source Code</strong></summary>
+
+```javascript
+function getExperience(uint256 idExperience)
+        external
+        view
+        returns (Experience memory)
+    {
+        return experiences[idExperience];
+    }
+```
+</details>
+
+---    
+
+> ### getParticipationsIds
+
+Get experience id list registered by participant
+
+```solidity
+function getParticipationsIds() external view
+returns(uint256[])
+```
+
+<details>
+	<summary><strong>Source Code</strong></summary>
+
+```javascript
+function getParticipationsIds() external view returns (uint256[] memory) {
+        uint256[] memory ticketsIds = participants[msg.sender].ticketsIds;
+
+        return ticketsIds;
+    }
+```
+</details>
+
+---    
+
+> ### getParticipation
+
+Get ticket of participant for an experience id
+
+```solidity
+function getParticipation(uint256 experienceId) external view
+returns(struct Fillgood.Ticket)
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+
+| ------------- |------------- | -----|
+
+| experienceId | uint256 |  | 
+
+**Returns**
+
+Ticket object
+
+<details>
+	<summary><strong>Source Code</strong></summary>
+
+```javascript
+function getParticipation(uint256 experienceId)
+        external
+        view
+        returns (Ticket memory)
+    {
+        return participants[msg.sender].tickets[experienceId];
     }
 ```
 </details>
@@ -250,15 +342,44 @@ function buyPack(uint8 _offerType) external {
         bool success = figo.transferFrom(msg.sender, address(this), amount);
         require(success, "transfertFrom failed");
 
-        if (!partners[msg.sender].isRegister) {
-            partnerIds.increment();
-            partners[msg.sender].partnerId = partnerIds.current();
-            partners[msg.sender].isRegister = true;
-            partnersAddresses[partnerIds.current()] = msg.sender;
-        }
+        _registerPartner(msg.sender);
 
         partners[msg.sender].offer = OfferType(_offerType);
         emit offerSold(msg.sender, packs[_offerType].name);
+    }
+```
+</details>
+
+---    
+
+> ### _registerPartner
+
+Register a partner in partner lists
+ add entry partnerId to address
+
+```solidity
+function _registerPartner(address _sender) internal nonpayable
+```
+
+**Arguments**
+
+| Name        | Type           | Description  |
+
+| ------------- |------------- | -----|
+
+| _sender | address |  | 
+
+<details>
+	<summary><strong>Source Code</strong></summary>
+
+```javascript
+function _registerPartner(address _sender) internal {
+        if (!partners[_sender].isRegister) {
+            partnerIds.increment();
+            partners[_sender].partnerId = partnerIds.current();
+            partners[_sender].isRegister = true;
+            partnersAddresses[partnerIds.current()] = _sender;
+        }
     }
 ```
 </details>
@@ -288,10 +409,6 @@ returns(bool)
 | _experienceType | string |  | 
 | _meetingPlace | string |  | 
 
-**Returns**
-
-bool
-
 <details>
 	<summary><strong>Source Code</strong></summary>
 
@@ -305,29 +422,29 @@ function addExperience(
         string memory _experienceType,
         string memory _meetingPlace
     ) external returns (bool) {
+        _registerPartner(msg.sender);
         experienceIds.increment();
-        Experience storage e = experiences[experienceIds.current()];
-        e.experienceId = experienceIds.current();
-        e.partnerId = partners[msg.sender].partnerId;
-        e.nbTickets = _nbTickets;
-        e.price = _price;
-        e.reward = _reward;
-        e.date = _date;
-        e.name = _name;
-        e.experienceType = _experienceType;
-        e.meetingPlace = _meetingPlace;
 
-        participantsAddresses[experienceIds.current()] = msg.sender;
-
+        experiences[experienceIds.current()] = Experience(
+            experienceIds.current(),
+            partners[msg.sender].partnerId,
+            _nbTickets,
+            0,
+            _price,
+            _reward,
+            _date,
+            _name,
+            _experienceType,
+            _meetingPlace
+        );
         experienceTicketing.createTicket(
             experienceIds.current(),
             _nbTickets,
             _date,
             _name
         );
-
+        partners[msg.sender].experiencesIds.push(experienceIds.current());
         emit ExperienceAdded(msg.sender, _name);
-
         return true;
     }
 ```
@@ -362,27 +479,26 @@ function registerParticipant(uint256 _experienceId) external {
             "not enougth tickets"
         );
 
-        Participant storage currentParticipant = participants[msg.sender];
         require(
-            !currentParticipant.tickets[_experienceId].isRegistered,
+            !participants[msg.sender].tickets[_experienceId].isRegistered,
             "You are already registered"
         );
 
         // pay for registering an experience
-        address partnerAddress = partnersAddresses[experience.partnerId];
         bool success = figo.transferFrom(
             msg.sender,
-            partnerAddress,
+            partnersAddresses[experience.partnerId],
             experience.price
         );
         require(success, "transfertFrom failed");
 
         // if partcipant has no account
-        if (participantsAddresses[participantsIds.current()] == address(0)) {
-            participantsAddresses[participantsIds.current()] = msg.sender;
-            currentParticipant.participantId = participantsIds.current();
+        if (participants[msg.sender].participantId == 0) {
+            participants[msg.sender].participantId = participantsIds.current();
         }
-        currentParticipant.tickets[_experienceId] = Ticket(true, false);
+
+        participants[msg.sender].tickets[_experienceId] = Ticket(true, false);
+        participants[msg.sender].ticketsIds.push(_experienceId);
 
         // mint ticket
         experienceTicketing.mint(

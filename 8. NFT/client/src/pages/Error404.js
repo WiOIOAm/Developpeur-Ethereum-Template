@@ -20,8 +20,6 @@ import React from "react";
 import { Container, Row, Col } from "reactstrap";
 
 // core components
-import ColorNavbar from "components/Navbars/ColorNavbar.js";
-import DemoFooter from "components/Footers/DemoFooter.js";
 
 export default function Error400() {
   const wrapper = React.useRef(null);
@@ -36,7 +34,6 @@ export default function Error400() {
   }, []);
   return (
     <>
-      <ColorNavbar />
       <div className="wrapper" ref={wrapper}>
         <div className="page-header error-page header-filter">
           <div
@@ -58,7 +55,6 @@ export default function Error400() {
             </Row>
           </Container>
         </div>
-        <DemoFooter />
       </div>
     </>
   );

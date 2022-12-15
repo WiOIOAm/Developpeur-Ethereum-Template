@@ -14,9 +14,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Web3Button } from "@web3modal/react";
 
 // reactstrap components
 import {
@@ -24,7 +23,6 @@ import {
   NavbarBrand,
   Navbar,
   NavItem,
-  NavLink,
   Nav,
   Container,
   Row,
@@ -33,10 +31,19 @@ import {
   Button,
 } from "reactstrap";
 
-export default function ColorNavbar() {
-  const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
+// context
+import useEth from "contexts/EthContext/useEth";
 
-  React.useEffect(() => {
+import truncateEthAddress from "utils/truncate-eth-address";
+
+export default function ColorNavbar() {
+  const [navbarColor, setNavbarColor] = useState("navbar-transparent");
+  const {
+    state: { me },
+    dispatch,
+  } = useEth();
+
+  useEffect(() => {
     window.addEventListener("scroll", changeNavbarColor);
     return function cleanup() {
       window.removeEventListener("scroll", changeNavbarColor);
@@ -55,6 +62,11 @@ export default function ColorNavbar() {
     ) {
       setNavbarColor("navbar-transparent");
     }
+  };
+  const handleClick = () => {
+    dispatch({
+      type: "ASK_CONNECTION",
+    });
   };
   return (
     <>
@@ -77,9 +89,9 @@ export default function ColorNavbar() {
             <div className="navbar-collapse-header">
               <Row>
                 <Col className="collapse-brand" xs="6">
-                  <NavLink href="/">
+                  <Link to="/">
                     FILLGOOD •<span> Booster d'évènements sportifs</span>
-                  </NavLink>
+                  </Link>
                 </Col>
                 <Col className="collapse-close text-right" xs="6">
                   <button className="navbar-toggler" id="navigation">
@@ -90,29 +102,37 @@ export default function ColorNavbar() {
             </div>
             <Nav className="ml-auto" navbar>
               <NavItem className="active">
-                <NavLink href="/">Accueil</NavLink>
+                <Link to="/">Accueil</Link>
               </NavItem>
               <NavItem className="active">
-                <NavLink href="/sports">Sport</NavLink>
+                <Link to="/sports">Sport</Link>
               </NavItem>
               <NavItem className="active">
-                <NavLink href="/agenda">Agenda</NavLink>
+                <Link to="/agenda">Agenda</Link>
               </NavItem>
               <NavItem className="active">
-                <NavLink href="/a-propos">A propos</NavLink>
+                <Link to="/a-propos">A propos</Link>
+              </NavItem>
+              <NavItem>
+                <Link to="/dashboard">
+                  <Button className="nav-link" color="default" size="sm">
+                    <p>Dashboard</p>
+                  </Button>
+                </Link>
               </NavItem>
               <NavItem>
                 <Button
                   className="nav-link"
-                  color="default"
-                  href="/dashboard"
+                  color="primary"
                   size="sm"
+                  onClick={handleClick}
                 >
-                  <p>Dashboard</p>
+                  {me?.address
+                    ? truncateEthAddress(me.address)
+                    : "Connect Wallet"}
+                  <br />
+                  {me?.figo || 0} $FIGO
                 </Button>
-              </NavItem>
-              <NavItem>
-                <Web3Button />
               </NavItem>
             </Nav>
           </UncontrolledCollapse>

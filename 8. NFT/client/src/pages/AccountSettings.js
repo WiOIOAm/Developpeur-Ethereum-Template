@@ -17,13 +17,11 @@
 import React from "react";
 // nodejs library that concatenates classes
 import classnames from "classnames";
-// react plugin used to create DropdownMenu for selecting items
-import Select from "react-select";
+import { Link } from "react-router-dom";
 
 // reactstrap components
 import {
   NavItem,
-  NavLink,
   Nav,
   TabContent,
   TabPane,
@@ -32,18 +30,21 @@ import {
   Col,
 } from "reactstrap";
 
-// core components
-import ColorNavbar from "components/Navbars/ColorNavbar.js";
-import DemoFooter from "components/Footers/DemoFooter.js";
-import ImageUpload from "components/CustomUpload/ImageUpload.js";
-
 // parts
 import CreateExperienceForm from "components/Forms/CreateExperienceForm.js";
 import CreatedExperiences from "components/Lists/CreatedExperiences.js";
+import truncateEthAddress from "utils/truncate-eth-address";
+
+// context
+import useEth from "contexts/EthContext/useEth";
+import Participations from "components/Lists/Participations";
 
 export default function AccountSettings() {
-  const [profileTabs, setProfileTabs] = React.useState(1);
+  const {
+    state: { me },
+  } = useEth();
 
+  const [profileTabs, setProfileTabs] = React.useState(1);
   const wrapper = React.useRef(null);
   React.useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -57,7 +58,6 @@ export default function AccountSettings() {
 
   return (
     <>
-      <ColorNavbar />
       <div className="wrapper" ref={wrapper}>
         <div className="section">
           <Container>
@@ -66,8 +66,11 @@ export default function AccountSettings() {
                 <div className="section">
                   {/* User Information */}
                   <section className="text-center">
-                    <ImageUpload avatar addBtnColor="default" />
-                    <h3 className="title">Charlie Bailey</h3>
+                    <h3 className="title">
+                      {me
+                        ? truncateEthAddress(me.address)
+                        : "connectez votre wallet"}
+                    </h3>
                   </section>
                   {/* User Information */}
                   {/* Profile Sidebar */}
@@ -75,7 +78,7 @@ export default function AccountSettings() {
                     <br />
                     <Nav className="flex-column nav-tabs-info" role="tablist">
                       <NavItem>
-                        <NavLink
+                        <Link
                           className={classnames({
                             active: profileTabs === 1,
                           })}
@@ -83,15 +86,15 @@ export default function AccountSettings() {
                             e.preventDefault();
                             setProfileTabs(1);
                           }}
-                          href="#pablo"
+                          to="#pablo"
                         >
                           <i className="tim-icons icon-single-02" /> Créer une
                           expérience
-                        </NavLink>
+                        </Link>
                       </NavItem>
                       <hr className="line-info" />
                       <NavItem>
-                        <NavLink
+                        <Link
                           className={classnames({
                             active: profileTabs === 2,
                           })}
@@ -99,15 +102,15 @@ export default function AccountSettings() {
                             e.preventDefault();
                             setProfileTabs(2);
                           }}
-                          href="#pablo"
+                          to="#pablo"
                         >
                           <i className="tim-icons icon-credit-card" /> Mes
                           expériences créées
-                        </NavLink>
+                        </Link>
                       </NavItem>
                       <hr className="line-info" />
                       <NavItem>
-                        <NavLink
+                        <Link
                           className={classnames({
                             active: profileTabs === 3,
                           })}
@@ -115,11 +118,11 @@ export default function AccountSettings() {
                             e.preventDefault();
                             setProfileTabs(3);
                           }}
-                          href="#pablo"
+                          to="#pablo"
                         >
                           <i className="tim-icons icon-lock-circle" /> Mes
                           participations
-                        </NavLink>
+                        </Link>
                       </NavItem>
                       <hr className="line-info" />
                     </Nav>
@@ -131,20 +134,13 @@ export default function AccountSettings() {
                 <div className="section">
                   <TabContent activeTab={"profile" + profileTabs}>
                     <TabPane tabId="profile1">
-                      <CreateExperienceForm />
+                      <CreateExperienceForm setProfileTabs={setProfileTabs} />
                     </TabPane>
                     <TabPane tabId="profile2">
                       <CreatedExperiences />
                     </TabPane>
                     <TabPane tabId="profile3">
-                      <div className="g-pos-rel h-100 g-brd-around g-brd-gray-light-v7 g-rounded-4 g-pa-15 g-pa-30--md">
-                        <header>
-                          <h2 className="text-uppercase g-font-size-12 g-font-size-default--md g-color-black mb-0">
-                            Mes participations
-                          </h2>
-                        </header>
-                        <hr className="line-info" />
-                      </div>
+                      <Participations />
                     </TabPane>
                   </TabContent>
                 </div>
@@ -152,7 +148,6 @@ export default function AccountSettings() {
             </Row>
           </Container>
         </div>
-        <DemoFooter />
       </div>
     </>
   );

@@ -24,6 +24,7 @@ import defaultImage from "assets/images/image_placeholder.jpg";
 import defaultAvatar from "assets/images/placeholder.jpg";
 
 export default function ImageUpload({
+  cta,
   avatar,
   addBtnColor,
   addBtnClasses,
@@ -75,7 +76,7 @@ export default function ImageUpload({
             className={addBtnClasses}
             onClick={() => handleClick()}
           >
-            {avatar ? "Add Photo" : "Select image"}
+            {cta}
           </Button>
         ) : (
           <span>

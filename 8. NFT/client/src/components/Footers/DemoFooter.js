@@ -21,7 +21,6 @@ import { Link } from "react-router-dom";
 import {
   Button,
   NavItem,
-  NavLink,
   Nav,
   Container,
   Row,
@@ -41,76 +40,76 @@ export default function DemoFooter() {
             <Col md="2" xs="6">
               <Nav>
                 <NavItem>
-                  <NavLink to="/landing-page" tag={Link}>
+                  <Link to="/landing-page" tag={Link}>
                     contact
-                  </NavLink>
+                  </Link>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/register-page" tag={Link}>
+                  <Link to="/register-page" tag={Link}>
                     whitepaper
-                  </NavLink>
+                  </Link>
                 </NavItem>
                 <NavItem>
-                  <NavLink to="/profile-page" tag={Link}>
+                  <Link to="/profile-page" tag={Link}>
                     Dossier de presse
-                  </NavLink>
+                  </Link>
                 </NavItem>
               </Nav>
             </Col>
             <Col md="2" xs="6">
               <Nav>
                 <NavItem>
-                  <NavLink href="/cgv" target="_blank">
+                  <Link to="/cgv" target="_blank">
                     CGV
-                  </NavLink>
+                  </Link>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="/cookies" target="_blank">
+                  <Link to="/cookies" target="_blank">
                     Cookies
-                  </NavLink>
+                  </Link>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="/mentions-legales" target="_blank">
+                  <Link to="/mentions-legales" target="_blank">
                     Mentions légales
-                  </NavLink>
+                  </Link>
                 </NavItem>
               </Nav>
             </Col>
             <Col md="2" xs="6">
               <Nav>
                 <NavItem>
-                  <NavLink to="/" tag={Link}>
+                  <Link to="/" tag={Link}>
                     Accueil
-                  </NavLink>
+                  </Link>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="/mon-compte" target="_blank">
+                  <Link to="/mon-compte" target="_blank">
                     mon compte
-                  </NavLink>
+                  </Link>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="/cagnotte" target="_blank">
+                  <Link to="/cagnotte" target="_blank">
                     Dépenser ma cagnotte
-                  </NavLink>
+                  </Link>
                 </NavItem>
               </Nav>
             </Col>
             <Col md="2" xs="6">
               <Nav>
                 <NavItem>
-                  <NavLink href="/foire-aux-questions" target="_blank">
+                  <Link to="/foire-aux-questions" target="_blank">
                     FAQ
-                  </NavLink>
+                  </Link>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="/devenir-partenaire" target="_blank">
+                  <Link to="/devenir-partenaire" target="_blank">
                     Devenir partenaire
-                  </NavLink>
+                  </Link>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="mailto:support@fillgood.xyz" target="_blank">
+                  <Link to="mailto:support@fillgood.xyz" target="_blank">
                     Remonter un bug
-                  </NavLink>
+                  </Link>
                 </NavItem>
               </Nav>
             </Col>

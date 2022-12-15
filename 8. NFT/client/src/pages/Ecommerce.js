@@ -16,6 +16,7 @@
 */
 import React from "react";
 import Slick from "react-slick";
+import { Link } from "react-router-dom";
 
 // reactstrap components
 import {
@@ -28,10 +29,6 @@ import {
   Col,
   Input,
 } from "reactstrap";
-
-// core components
-import ColorNavbar from "components/Navbars/ColorNavbar.js";
-import DemoFooter from "components/Footers/DemoFooter.js";
 
 export default function Ecommerce() {
   const [transform, setTransform] = React.useState(
@@ -129,7 +126,6 @@ export default function Ecommerce() {
   };
   return (
     <>
-      <ColorNavbar />
       <div className="wrapper" ref={wrapper}>
         <div className="header header-1">
           <div className="page-header header-filter">
@@ -269,9 +265,9 @@ export default function Ecommerce() {
                   <CardBody>
                     <div className="content-bottom">
                       <h6 className="card-category">Equipe</h6>
-                      <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                      <Link to="/agenda?filter=sport&value=handball">
                         <CardTitle tag="h3">HandBall</CardTitle>
-                      </a>
+                      </Link>
                     </div>
                   </CardBody>
                 </Card>
@@ -291,9 +287,9 @@ export default function Ecommerce() {
                   <CardBody>
                     <div className="content-bottom">
                       <h6 className="card-category">Individuel</h6>
-                      <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                      <Link to="/agenda?filter=sport&value=handball">
                         <CardTitle tag="h3">Swim and run</CardTitle>
-                      </a>
+                      </Link>
                     </div>
                   </CardBody>
                 </Card>
@@ -317,9 +313,9 @@ export default function Ecommerce() {
                   <CardBody>
                     <div className="content-bottom">
                       <h6 className="card-category">Mixtes</h6>
-                      <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                      <Link to="/agenda?filter=sport&value=handball">
                         <CardTitle tag="h3">Roller Derby</CardTitle>
-                      </a>
+                      </Link>
                     </div>
                   </CardBody>
                 </Card>
@@ -339,9 +335,9 @@ export default function Ecommerce() {
                   <CardBody>
                     <div className="content-bottom">
                       <h6 className="card-category">Individuel</h6>
-                      <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                      <Link to="/agenda?filter=sport&value=handball">
                         <CardTitle tag="h3">VTT Enduro</CardTitle>
-                      </a>
+                      </Link>
                     </div>
                   </CardBody>
                 </Card>
@@ -458,9 +454,6 @@ export default function Ecommerce() {
             </Container>
           </div>
         </div>
-
-        {/* end-main-raised */}
-        <DemoFooter />
       </div>
     </>
   );

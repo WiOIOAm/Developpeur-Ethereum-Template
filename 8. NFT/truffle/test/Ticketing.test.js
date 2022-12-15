@@ -1,8 +1,5 @@
-const Fillgood = artifacts.require("fillgood.sol");
-const Figo = artifacts.require("Figo");
 const ExperienceTicketing = artifacts.require("ExperienceTicketing");
 
-const truffleAssert = require("truffle-assertions");
 const { BN, expectRevert, expectEvent } = require("@openzeppelin/test-helpers");
 const { expect } = require("chai");
 

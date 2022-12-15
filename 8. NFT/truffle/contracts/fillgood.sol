@@ -21,11 +21,11 @@ contract Fillgood is Ownable {
         uint256 fees;
     }
     struct Partner {
+        bool isRegister;
         uint256 partnerId;
         string name;
-        uint256[] experiencesIds;
-        bool isRegister;
         OfferType offer;
+        uint256[] experiencesIds;
     }
     struct Experience {
         uint256 experienceId;
@@ -47,6 +47,7 @@ contract Fillgood is Ownable {
         uint256 participantId;
         // experience id to registration ticket
         mapping(uint256 => Ticket) tickets;
+        uint256[] ticketsIds;
     }
 
     event offerSold(address partnerAddress, string offerName);
@@ -61,10 +62,9 @@ contract Fillgood is Ownable {
     Pack[] public packs;
 
     mapping(uint256 => Experience) public experiences;
-    mapping(address => Partner) private partners;
+    mapping(address => Partner) partners;
     mapping(address => Participant) private participants;
     mapping(uint256 => address) private partnersAddresses;
-    mapping(uint256 => address) private participantsAddresses;
 
     Counters.Counter public partnerIds;
     Counters.Counter public experienceIds;
@@ -81,18 +81,17 @@ contract Fillgood is Ownable {
     }
 
     /**
-     * @notice Get partner by address
+     * @notice Get self as partner
      * @dev Getter on partners mapping
-     * @return Partner array
+     * @return Partner object
      */
-    function getPartnerByAddress(
-        address _address
-    ) external view onlyOwner returns (Partner memory) {
-        return partners[_address];
+    function getSelfAsPartner() external view returns (Partner memory) {
+        return partners[msg.sender];
     }
 
     /**
      * @notice Get partner by id
+     * use to get a partner detail in experience
      * @dev Getter on partnersAddress mapping
      * @return address address
      */
@@ -102,15 +101,38 @@ contract Fillgood is Ownable {
         return partnersAddresses[_id];
     }
 
-    // function getSelfAsParticipant()
-    //     external
-    //     view
-    //     returns (Ticket[] memory, uint32)
-    // {
-    //     Ticket[] memory myTickets = participants[msg.sender].tickets;
-    //     uint32 id = participants[msg.sender].participantId;
-    //     return (myTickets, id);
-    // }
+    /**
+     * @notice Get an Experience by id
+     * @dev Getter on experiences mapping
+     * @return Experience object
+     */
+    function getExperience(
+        uint256 idExperience
+    ) external view returns (Experience memory) {
+        return experiences[idExperience];
+    }
+
+    /**
+     * @notice Get experience id list registered by participant
+     * @dev Getter on experiences mapping
+     * @return uint256[] ids
+     */
+    function getParticipationsIds() external view returns (uint256[] memory) {
+        uint256[] memory ticketsIds = participants[msg.sender].ticketsIds;
+
+        return ticketsIds;
+    }
+
+    /**
+     * @notice Get ticket of participant for an experience id
+     * @dev Getter on Participants => Ticket mapping
+     * @return Ticket object
+     */
+    function getParticipation(
+        uint256 experienceId
+    ) external view returns (Ticket memory) {
+        return participants[msg.sender].tickets[experienceId];
+    }
 
     /**
      * @notice Partner buy FillGood Offer
@@ -128,22 +150,29 @@ contract Fillgood is Ownable {
         bool success = figo.transferFrom(msg.sender, address(this), amount);
         require(success, "transfertFrom failed");
 
-        if (!partners[msg.sender].isRegister) {
-            partnerIds.increment();
-            partners[msg.sender].partnerId = partnerIds.current();
-            partners[msg.sender].isRegister = true;
-            partnersAddresses[partnerIds.current()] = msg.sender;
-        }
+        _registerPartner(msg.sender);
 
         partners[msg.sender].offer = OfferType(_offerType);
         emit offerSold(msg.sender, packs[_offerType].name);
     }
 
     /**
+     * @notice Register a partner in partner lists
+     * add entry partnerId to address
+     */
+    function _registerPartner(address _sender) internal {
+        if (!partners[_sender].isRegister) {
+            partnerIds.increment();
+            partners[_sender].partnerId = partnerIds.current();
+            partners[_sender].isRegister = true;
+            partnersAddresses[partnerIds.current()] = _sender;
+        }
+    }
+
+    /**
      * @notice Partner add an experience
      * @notice experienceTicketing Token will be added
      * emit ExperienceAdded
-     * @return bool
      */
     function addExperience(
         uint8 _nbTickets,
@@ -154,29 +183,29 @@ contract Fillgood is Ownable {
         string memory _experienceType,
         string memory _meetingPlace
     ) external returns (bool) {
+        _registerPartner(msg.sender);
         experienceIds.increment();
-        Experience storage e = experiences[experienceIds.current()];
-        e.experienceId = experienceIds.current();
-        e.partnerId = partners[msg.sender].partnerId;
-        e.nbTickets = _nbTickets;
-        e.price = _price;
-        e.reward = _reward;
-        e.date = _date;
-        e.name = _name;
-        e.experienceType = _experienceType;
-        e.meetingPlace = _meetingPlace;
 
-        participantsAddresses[experienceIds.current()] = msg.sender;
-
+        experiences[experienceIds.current()] = Experience(
+            experienceIds.current(),
+            partners[msg.sender].partnerId,
+            _nbTickets,
+            0,
+            _price,
+            _reward,
+            _date,
+            _name,
+            _experienceType,
+            _meetingPlace
+        );
         experienceTicketing.createTicket(
             experienceIds.current(),
             _nbTickets,
             _date,
             _name
         );
-
+        partners[msg.sender].experiencesIds.push(experienceIds.current());
         emit ExperienceAdded(msg.sender, _name);
-
         return true;
     }
 
@@ -197,27 +226,26 @@ contract Fillgood is Ownable {
             "not enougth tickets"
         );
 
-        Participant storage currentParticipant = participants[msg.sender];
         require(
-            !currentParticipant.tickets[_experienceId].isRegistered,
+            !participants[msg.sender].tickets[_experienceId].isRegistered,
             "You are already registered"
         );
 
         // pay for registering an experience
-        address partnerAddress = partnersAddresses[experience.partnerId];
         bool success = figo.transferFrom(
             msg.sender,
-            partnerAddress,
+            partnersAddresses[experience.partnerId],
             experience.price
         );
         require(success, "transfertFrom failed");
 
         // if partcipant has no account
-        if (participantsAddresses[participantsIds.current()] == address(0)) {
-            participantsAddresses[participantsIds.current()] = msg.sender;
-            currentParticipant.participantId = participantsIds.current();
+        if (participants[msg.sender].participantId == 0) {
+            participants[msg.sender].participantId = participantsIds.current();
         }
-        currentParticipant.tickets[_experienceId] = Ticket(true, false);
+
+        participants[msg.sender].tickets[_experienceId] = Ticket(true, false);
+        participants[msg.sender].ticketsIds.push(_experienceId);
 
         // mint ticket
         experienceTicketing.mint(
