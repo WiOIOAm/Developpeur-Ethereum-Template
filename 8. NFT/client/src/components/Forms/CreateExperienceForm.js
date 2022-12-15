@@ -16,6 +16,7 @@
 */
 import React, { useState } from "react";
 import { useFormik } from "formik";
+import convert from "ethereum-unit-converter";
 
 // reactstrap components
 import { Button, FormGroup, Input, Row, Col } from "reactstrap";
@@ -56,8 +57,8 @@ export default function CreateExperienceForm({ setProfileTabs }) {
           dispatch({ type: "LOADING", data: true });
           const formatData = [
             parseInt(formik.values.nbTickets),
-            parseInt(formik.values.price),
-            parseInt(formik.values.reward),
+            convert(parseInt(formik.values.price), "ether", "wei").toString(),
+            convert(parseInt(formik.values.reward), "ether", "wei").toString(),
             parseInt(Date.parse(formik.values.date)),
             formik.values.name,
             formik.values.sport,

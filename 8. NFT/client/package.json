@@ -18,6 +18,7 @@
     "bootstrap": "4.5.3",
     "chart.js": "2.9.4",
     "eslint-plugin-flowtype": "8.0.3",
+    "ethereum-unit-converter": "^0.0.17",
     "ethers": "^5.7.2",
     "formik": "^2.2.9",
     "headroom.js": "0.12.0",

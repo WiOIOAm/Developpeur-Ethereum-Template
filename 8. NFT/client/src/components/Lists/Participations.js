@@ -8,9 +8,9 @@ import useEth from "contexts/EthContext/useEth";
 
 export default function Participations() {
   const {
-    state: { errorMessage, isLoading, me, experiences },
+    state: { errorMessage, isLoading, me },
   } = useEth();
-  console.log("Participations-experiences", experiences);
+
   return (
     <>
       <header>

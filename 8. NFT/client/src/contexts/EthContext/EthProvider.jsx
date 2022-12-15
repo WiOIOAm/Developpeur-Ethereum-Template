@@ -48,8 +48,8 @@ function EthProvider({ children }) {
         });
         if (experienceIds) {
           experiences = await Promise.all(
-            partner.experiencesIds.map(async (id) => {
-              return await contract.methods.getExperience(id).call({
+            [...experienceIds].map(async (id) => {
+              return await contract.methods.getExperience(parseInt(id)).call({
                 from: account,
               });
             })

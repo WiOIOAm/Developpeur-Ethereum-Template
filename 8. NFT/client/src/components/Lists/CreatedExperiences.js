@@ -1,9 +1,8 @@
 import React from "react";
-// import { useContractRead } from "wagmi";
 
 // reactstrap components
-import { Button, Table } from "reactstrap";
-
+import { Table } from "reactstrap";
+import convert from "ethereum-unit-converter";
 // context
 import useEth from "contexts/EthContext/useEth";
 
@@ -45,8 +44,10 @@ export default function CreatedExperiences() {
                   <td>{name}</td>
                   <td>{}</td>
                   <td>{meetingPlace}</td>
-                  <td className="text-center">{price}</td>
-                  <td>{reward}</td>
+                  <td className="text-center">
+                    {convert(price, "wei", "ether")} $FIGO
+                  </td>
+                  <td>{convert(reward, "wei", "ether")} $FIGO</td>
                   <td>{`${nbTicketsSold}/${nbTickets}`}</td>
                 </tr>
               )

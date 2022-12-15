@@ -16,6 +16,7 @@
 */
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import convert from "ethereum-unit-converter";
 // reactstrap components
 import {
   Button,
@@ -65,7 +66,7 @@ export default function ProductPage() {
         dispatch({ type: "LOADING", data: true });
         const figoAddress = artifact.networks[networkID].address;
         const approve = await figoContract.methods
-          .approve(figoAddress, parseInt(price))
+          .approve(figoAddress, price)
           .send({ from: me.address });
 
         console.log("APPROVE", approve);
@@ -140,7 +141,7 @@ export default function ProductPage() {
                       <CardFooter>
                         <div className="price-container">
                           <span className="price">
-                            {experience.price} $FIGO
+                            {convert(experience.price, "wei", "ether")} $FIGO
                           </span>
                         </div>
                         <Button
@@ -155,7 +156,8 @@ export default function ProductPage() {
                           placement="left"
                           target="tooltip320714545"
                         >
-                          Récompense :{experience.reward} $FIGO
+                          Récompense :{" "}
+                          {convert(experience.reward, "wei", "ether")} $FIGO
                         </UncontrolledTooltip>
                       </CardFooter>
                     </CardBody>
