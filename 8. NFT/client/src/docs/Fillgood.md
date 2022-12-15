@@ -203,11 +203,9 @@ address address
 	<summary><strong>Source Code</strong></summary>
 
 ```javascript
-function getPartnerAddressById(uint256 _id)
-        external
-        view
-        returns (address)
-    {
+function getPartnerAddressById(
+        uint256 _id
+    ) external view returns (address) {
         return partnersAddresses[_id];
     }
 ```
@@ -240,11 +238,9 @@ Experience object
 	<summary><strong>Source Code</strong></summary>
 
 ```javascript
-function getExperience(uint256 idExperience)
-        external
-        view
-        returns (Experience memory)
-    {
+function getExperience(
+        uint256 idExperience
+    ) external view returns (Experience memory) {
         return experiences[idExperience];
     }
 ```
@@ -300,11 +296,9 @@ Ticket object
 	<summary><strong>Source Code</strong></summary>
 
 ```javascript
-function getParticipation(uint256 experienceId)
-        external
-        view
-        returns (Ticket memory)
-    {
+function getParticipation(
+        uint256 experienceId
+    ) external view returns (Ticket memory) {
         return participants[msg.sender].tickets[experienceId];
     }
 ```

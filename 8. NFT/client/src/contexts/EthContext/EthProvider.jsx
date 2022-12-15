@@ -8,23 +8,6 @@ import { reducer, actions, initialState } from "./state";
 function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const updateFreshEvent = async (error, { event, returnValues }) => {
-    if (error) {
-      console.error("updateAppDataOnEvent", error);
-    } else {
-      const freshEvent = {
-        event,
-        value:
-          event === "WorkflowStatusChange" ? returnValues[1] : returnValues[0],
-      };
-
-      dispatch({
-        type: actions.update,
-        data: { freshEvent },
-      });
-    }
-  };
-
   const getContractData = useCallback(async () => {
     if (
       state.contract &&
@@ -100,54 +83,21 @@ function EthProvider({ children }) {
           experiences: partnerExperiences,
         };
 
-        // get past events
-        let oldEvents = await contract.getPastEvents("allEvents", {
-          fromBlock: 0,
-          toBlock: "latest",
+        dispatch({
+          type: actions.update,
+          data: {
+            me,
+            errorMessage: null,
+            experiences,
+          },
         });
-        let oldies = [];
-        oldEvents.forEach(
-          ({ event, returnValues, blockHash, blockNumber, id }) => {
-            oldies.push({
-              event,
-              value: returnValues[0],
-              blockHash,
-              blockNumber,
-              id,
-            });
-          }
-        );
 
-        return {
-          me,
-          oldEvents: oldies,
-          errorMessage: null,
-          experiences,
-        };
+        return;
       } catch (error) {
         console.error("getContractData", error);
       }
     }
   }, [state.accounts, state.contract, state.figoContract]);
-
-  /**
-   * ON FRESH EVENT UPDATE DATA
-   */
-  useEffect(() => {
-    const getAppData = async () => {
-      const appData = await getContractData();
-
-      dispatch({
-        type: actions.update,
-        data: {
-          ...appData,
-        },
-      });
-    };
-    getAppData();
-
-    return () => {};
-  }, [getContractData, state.freshEvent]);
 
   const reload = useCallback(async (artifact, figoArtifact) => {
     if (artifact && figoArtifact) {
@@ -183,6 +133,7 @@ function EthProvider({ children }) {
             errorMessage: null,
           },
         });
+        getContractData();
       } catch (err) {
         /**
          * when opening the application, if metamask is not connected
@@ -215,13 +166,6 @@ function EthProvider({ children }) {
           let figoAddress, figoContract;
           figoAddress = figoArtifact.networks[networkID].address;
           figoContract = new web3.eth.Contract(figoAbi, figoAddress);
-          /**
-           * EVENTS
-           */
-          const allEvents = contract.events.allEvents(
-            { fromBlock: "latest" },
-            updateFreshEvent
-          );
 
           dispatch({
             type: actions.init,
@@ -233,10 +177,10 @@ function EthProvider({ children }) {
               contract,
               figoContract,
               accounts,
-              allEvents,
               errorMessage: null,
             },
           });
+          getContractData();
         } catch (err) {
           dispatch({
             type: actions.error,
@@ -266,7 +210,6 @@ function EthProvider({ children }) {
             ...initialState,
             artifact: state.artifact,
             figoArtifact: state.figoArtifact,
-            allEvents: state.allEvents,
           },
         });
         reload(state.artifact, state.figoArtifact);
